@@ -1,0 +1,241 @@
+{
+  "jogo": "Wolvesville",
+  "gerado_em": "2026-11-26",
+  "fontes": [
+    "https://wolvesville.fandom.com/wiki/Category:Roles",
+    "https://wolvesville.fandom.com/wiki/Category:Villagers",
+    "https://wolvesville.fandom.com/wiki/Category:Werewolves",
+    "https://wolvesville.fandom.com/wiki/Category:Solo_killers",
+    "https://blog.wolvesville.com/ (Vampire court update, 02/11/2026)"
+  ],
+  "legenda": {
+    "tipo": "base = disponível desde o início; avancado = desbloqueado pela carta de papel (Épica+) do papel base; especial = só em modos/eventos específicos",
+    "evento": "nome do evento quando o papel é exclusivo de evento; null se for papel permanente",
+    "confianca": "wiki = descrição confirmada na wiki/blog oficial; geral = mecânica amplamente conhecida, não reconferida nesta pesquisa; incerto = só o nome/árvore foi confirmado, a habilidade precisa ser verificada"
+  },
+  "contagem_wiki": {
+    "total": 154,
+    "vila": 83,
+    "lobisomens": 36,
+    "solo_votacao": 3,
+    "solo_assassinos": 23,
+    "sem_time": 2,
+    "atribuicoes_aleatorias": 7,
+    "observacao": "A contagem da wiki inclui papéis do Wolvesville Classic e de modos especiais."
+  },
+  "regras_gerais": {
+    "fases": ["Noite", "Discussão", "Votação"],
+    "auras": {
+      "boa": "Maioria da Vila",
+      "ma": "Maioria dos Lobisomens",
+      "desconhecida": "Solos, Alpha Werewolf e sua árvore, e aldeões que matam ou revivem (exceto Priest, Judge e Avenger)"
+    },
+    "vitoria": {
+      "vila": "Eliminar todos os 'Perigos da Noite' (lobisomens, solo killers, conversores, Instigator e recrutas) com pelo menos um aldeão vivo",
+      "lobisomens": "Matar o solo killer e chegar a proporção 1:1 com os aldeões",
+      "solo_killer": "Ser o último jogador vivo (ou o último time solo de pé)",
+      "solo_votacao": "Condição própria, ligada à votação"
+    }
+  },
+  "equipes": {
+    "vila": [
+      { "nome": "Villager", "traducao": "Aldeão", "tipo": "base", "base": null, "evento": null, "aura": "boa", "descricao": "Não tem habilidade; ajuda com discussão e voto.", "confianca": "wiki" },
+
+      { "nome": "Doctor", "traducao": "Médico", "tipo": "base", "base": null, "evento": null, "aura": "boa", "descricao": "Protege um jogador por noite contra ataques; não pode se proteger.", "confianca": "wiki" },
+      { "nome": "Night Watchman", "traducao": "Vigia Noturno", "tipo": "avancado", "base": "Doctor", "evento": null, "aura": null, "descricao": "Papel protetor da árvore do Doctor.", "confianca": "incerto" },
+      { "nome": "Butcher", "traducao": "Açougueiro", "tipo": "avancado", "base": "Doctor", "evento": null, "aura": null, "descricao": "Papel protetor da árvore do Doctor.", "confianca": "incerto" },
+      { "nome": "Snow Angel", "traducao": "Anjo da Neve", "tipo": "avancado", "base": "Doctor", "evento": "Natal", "aura": null, "descricao": "Papel protetor de evento, do tipo que dá presentes.", "confianca": "incerto" },
+
+      { "nome": "Bodyguard", "traducao": "Guarda-costas", "tipo": "base", "base": null, "evento": null, "aura": "boa", "descricao": "Protege um jogador por noite; se ele for atacado, o Bodyguard recebe o ataque no lugar.", "confianca": "wiki" },
+      { "nome": "Tough Guy", "traducao": "Durão", "tipo": "avancado", "base": "Bodyguard", "evento": null, "aura": null, "descricao": "Protege um jogador; se ele ou o protegido for atacado, ninguém morre na hora, o Tough Guy e o atacante veem o papel um do outro e o Tough Guy morre no fim do dia seguinte.", "confianca": "wiki" },
+      { "nome": "Seer Apprentice", "traducao": "Aprendiz de Vidente", "tipo": "avancado", "base": "Bodyguard", "evento": null, "aura": null, "descricao": "Quando um papel informante morre, vira esse papel (Seer, Analyst, Aura Seer, Spirit Seer, Gambler, Detective, Mortician, Sheriff ou Violinist).", "confianca": "wiki" },
+      { "nome": "Locksmith", "traducao": "Chaveiro", "tipo": "avancado", "base": "Bodyguard", "evento": null, "aura": null, "descricao": "Papel da Vila listado na wiki; habilidade não confirmada.", "confianca": "incerto" },
+
+      { "nome": "Vigilante", "traducao": "Justiceiro", "tipo": "base", "base": null, "evento": null, "aura": "desconhecida", "descricao": "Pode atirar em um jogador durante a noite.", "confianca": "geral" },
+      { "nome": "Gunner", "traducao": "Atirador", "tipo": "avancado", "base": "Vigilante", "evento": null, "aura": "desconhecida", "descricao": "Tem balas para atirar durante o dia; o primeiro tiro revela o Gunner para todos.", "confianca": "geral" },
+      { "nome": "Bully", "traducao": "Valentão", "tipo": "avancado", "base": "Vigilante", "evento": null, "aura": null, "descricao": "Papel matador da Vila (árvore do Vigilante).", "confianca": "incerto" },
+
+      { "nome": "Jailer", "traducao": "Carcereiro", "tipo": "base", "base": null, "evento": null, "aura": "desconhecida", "descricao": "Prende um jogador durante o dia, conversa com ele à noite e pode executá-lo uma vez.", "confianca": "geral" },
+      { "nome": "Warden", "traducao": "Diretor da Prisão", "tipo": "avancado", "base": "Jailer", "evento": null, "aura": null, "descricao": "Prende dois jogadores à noite, que ficam impedidos de agir e podem conversar entre si.", "confianca": "geral" },
+
+      { "nome": "Red Lady", "traducao": "Dama de Vermelho", "tipo": "base", "base": null, "evento": null, "aura": "boa", "descricao": "Visita um jogador à noite e fica fora de casa; morre se visitar um jogador mau ou alguém que foi atacado.", "confianca": "geral" },
+      { "nome": "Ghost Lady", "traducao": "Dama Fantasma", "tipo": "avancado", "base": "Red Lady", "evento": null, "aura": null, "descricao": "Variante da Red Lady com proteção.", "confianca": "incerto" },
+      { "nome": "Easter Bunny", "traducao": "Coelhinho da Páscoa", "tipo": "avancado", "base": "Red Lady", "evento": "Páscoa", "aura": null, "descricao": "Papel de evento da árvore da Red Lady.", "confianca": "incerto" },
+
+      { "nome": "Priest", "traducao": "Padre", "tipo": "base", "base": null, "evento": null, "aura": "boa", "descricao": "Uma vez durante o dia joga água benta em alguém: se for lobisomem, ele morre; se não for, o Priest morre.", "confianca": "wiki" },
+      { "nome": "Marksman", "traducao": "Atirador de Elite", "tipo": "avancado", "base": "Priest", "evento": null, "aura": "desconhecida", "descricao": "Marca um alvo e atira depois; acertar um aldeão pode matar o próprio Marksman.", "confianca": "geral" },
+      { "nome": "Judge", "traducao": "Juiz", "tipo": "avancado", "base": "Priest", "evento": null, "aura": "boa", "descricao": "Papel de controle de votação (Crowd Control) da árvore do Priest.", "confianca": "incerto" },
+
+      { "nome": "Seer", "traducao": "Vidente", "tipo": "base", "base": null, "evento": null, "aura": "boa", "descricao": "Descobre o papel exato de um jogador por noite.", "confianca": "geral" },
+      { "nome": "Analyst", "traducao": "Analista", "tipo": "avancado", "base": "Seer", "evento": null, "aura": null, "descricao": "Papel investigativo da árvore do Seer.", "confianca": "incerto" },
+
+      { "nome": "Aura Seer", "traducao": "Vidente de Aura", "tipo": "base", "base": null, "evento": null, "aura": "boa", "descricao": "Descobre a aura (boa, má ou desconhecida) de um jogador por noite.", "confianca": "wiki" },
+      { "nome": "Spirit Seer", "traducao": "Vidente Espiritual", "tipo": "avancado", "base": "Aura Seer", "evento": null, "aura": null, "descricao": "Escolhe dois jogadores à noite e descobre se algum deles matou naquela noite.", "confianca": "geral" },
+      { "nome": "Gambler", "traducao": "Apostador", "tipo": "avancado", "base": "Aura Seer", "evento": null, "aura": null, "descricao": "Papel investigativo da árvore do Aura Seer.", "confianca": "incerto" },
+      { "nome": "Pumpkin Oracle", "traducao": "Oráculo da Abóbora", "tipo": "avancado", "base": "Aura Seer", "evento": "Halloween", "aura": null, "descricao": "Papel investigativo de evento.", "confianca": "incerto" },
+
+      { "nome": "Detective", "traducao": "Detetive", "tipo": "base", "base": null, "evento": null, "aura": "boa", "descricao": "Compara dois jogadores por noite e descobre se estão no mesmo time.", "confianca": "geral" },
+      { "nome": "Mortician", "traducao": "Agente Funerário", "tipo": "avancado", "base": "Detective", "evento": null, "aura": null, "descricao": "Investiga mortos para obter pistas sobre quem os matou.", "confianca": "geral" },
+
+      { "nome": "Sheriff", "traducao": "Xerife", "tipo": "base", "base": null, "evento": null, "aura": "boa", "descricao": "Vigia jogadores à noite (hoje até dois); se o vigiado morrer, recebe pista sobre o assassino.", "confianca": "geral" },
+      { "nome": "Violinist", "traducao": "Violinista", "tipo": "avancado", "base": "Sheriff", "evento": null, "aura": null, "descricao": "Papel informante da árvore do Sheriff.", "confianca": "incerto" },
+
+      { "nome": "Scarecrow", "traducao": "Espantalho", "tipo": "base", "base": null, "evento": null, "aura": null, "descricao": "Observa um jogador por noite e recebe informações sobre o que acontece com ele; é destruído por ataques noturnos que não ignoram proteção.", "confianca": "wiki" },
+      { "nome": "Dorothy", "traducao": "Dorothy", "tipo": "avancado", "base": "Scarecrow", "evento": "Emerald Village", "aura": null, "descricao": "Papel de evento da árvore do Scarecrow.", "confianca": "incerto" },
+      { "nome": "Prayer", "traducao": "Orador / Rezador", "tipo": "avancado", "base": "Scarecrow", "evento": null, "aura": null, "descricao": "Reza por até dois jogadores à noite e, ao amanhecer, descobre o que foi feito com eles (sem saber quem fez). Uma vez por jogo pode salvar um deles de um ataque noturno. Reformulado em nov/2026.", "confianca": "wiki" },
+
+      { "nome": "Medium", "traducao": "Médium", "tipo": "base", "base": null, "evento": null, "aura": "desconhecida", "descricao": "Conversa com os mortos à noite e pode reviver um jogador uma vez.", "confianca": "geral" },
+      { "nome": "Ritualist", "traducao": "Ritualista", "tipo": "avancado", "base": "Medium", "evento": null, "aura": "desconhecida", "descricao": "Papel revivedor da árvore do Medium.", "confianca": "geral" },
+      { "nome": "Conjuror", "traducao": "Conjurador", "tipo": "avancado", "base": "Medium", "evento": null, "aura": "desconhecida", "descricao": "Pode usar habilidades de papéis de jogadores mortos (ex.: usar a do Soulbinder).", "confianca": "geral" },
+
+      { "nome": "Soulbinder", "traducao": "Atador de Almas", "tipo": "base", "base": null, "evento": null, "aura": null, "descricao": "Liga a própria alma à de outro jogador (vivo ou morto), abrindo um chat privado; pode ligar até dois jogadores por partida.", "confianca": "wiki" },
+      { "nome": "Ferryman", "traducao": "Barqueiro", "tipo": "avancado", "base": "Soulbinder", "evento": null, "aura": null, "descricao": "Conversa anonimamente com os mortos a partir da 2ª noite e pode adiar a morte de jogadores atacados à noite.", "confianca": "wiki" },
+
+      { "nome": "Exorcist", "traducao": "Exorcista", "tipo": "avancado", "base": "não confirmado", "evento": "provável evento (lançado junto com Dracula)", "aura": null, "descricao": "À noite prevê a morte de um jogador; no dia seguinte, se descobrir o assassino, pode revivê-lo.", "confianca": "wiki" },
+
+      { "nome": "Mayor", "traducao": "Prefeito", "tipo": "base", "base": null, "evento": null, "aura": "boa", "descricao": "Pode revelar o papel durante o dia; a partir daí o voto dele vale dobrado.", "confianca": "wiki" },
+      { "nome": "Baker", "traducao": "Padeiro", "tipo": "avancado", "base": "Mayor", "evento": null, "aura": null, "descricao": "Envia pão para um jogador à noite, dando a ele um voto extra no dia seguinte.", "confianca": "wiki" },
+      { "nome": "Grumpy Grandma", "traducao": "Vovó Rabugenta", "tipo": "avancado", "base": "Mayor", "evento": null, "aura": null, "descricao": "Silencia um jogador para o dia seguinte (não pode falar/votar).", "confianca": "geral" },
+      { "nome": "Preacher", "traducao": "Pregador", "tipo": "avancado", "base": "Mayor", "evento": null, "aura": null, "descricao": "Toda noite tenta adivinhar se um jogador vai morrer; cada acerto dá +1 voto permanente (máx. 3), ativado quando se revela.", "confianca": "wiki" },
+      { "nome": "Nutcracker", "traducao": "Quebra-Nozes", "tipo": "avancado", "base": "Mayor", "evento": "Natal", "aura": null, "descricao": "Papel de evento da árvore do Mayor.", "confianca": "incerto" },
+      { "nome": "Resolutionist", "traducao": "Resolucionista", "tipo": "avancado", "base": "Mayor", "evento": "Ano Novo (provável)", "aura": null, "descricao": "Papel de evento da árvore do Mayor.", "confianca": "incerto" },
+
+      { "nome": "Witch", "traducao": "Bruxa", "tipo": "base", "base": null, "evento": null, "aura": "desconhecida", "descricao": "Tem duas poções: uma protege um jogador e outra mata.", "confianca": "geral" },
+      { "nome": "Forger", "traducao": "Ferreiro", "tipo": "avancado", "base": "Witch", "evento": null, "aura": "desconhecida", "descricao": "Forja dois escudos e uma espada (um dia cada) e precisa entregar cada item antes do próximo; escudo salva de um ataque noturno, espada mata.", "confianca": "wiki" },
+      { "nome": "Astronomer", "traducao": "Astrônomo", "tipo": "avancado", "base": "Witch", "evento": null, "aura": null, "descricao": "Uma vez invoca a Lua Nova (lobos não matam naquela noite) e uma vez uma chuva de meteoros que mata alguém; se acertar um aldeão, morrem os dois.", "confianca": "wiki" },
+      { "nome": "Pumpkin Dealer", "traducao": "Vendedor de Abóboras", "tipo": "avancado", "base": "Witch", "evento": "Halloween", "aura": null, "descricao": "Papel de evento que distribui presentes.", "confianca": "incerto" },
+
+      { "nome": "Beast Hunter", "traducao": "Caçador de Feras", "tipo": "base", "base": null, "evento": null, "aura": "desconhecida", "descricao": "Coloca uma armadilha em um jogador, que ativa na noite seguinte; mata lobisomens conforme a força deles e bloqueia (sem matar) ataques de solo killers.", "confianca": "wiki" },
+      { "nome": "Trapper", "traducao": "Armadilheiro", "tipo": "avancado", "base": "Beast Hunter", "evento": null, "aura": null, "descricao": "Coloca até 3 armadilhas ou ativa todas; jogadores com armadilha ativa não morrem à noite e lobos que os atacam perdem o membro mais fraco.", "confianca": "wiki" },
+      { "nome": "Flagger", "traducao": "Sinalizador", "tipo": "avancado", "base": "Beast Hunter", "evento": null, "aura": null, "descricao": "Papel 'Elite' da árvore do Beast Hunter (manipula o ataque dos lobos).", "confianca": "incerto" },
+
+      { "nome": "Loudmouth", "traducao": "Fofoqueiro", "tipo": "base", "base": null, "evento": null, "aura": "boa", "descricao": "Escolhe um jogador; quando o Loudmouth morre, o papel desse jogador é revelado a todos.", "confianca": "wiki" },
+      { "nome": "Avenger", "traducao": "Vingador", "tipo": "avancado", "base": "Loudmouth", "evento": null, "aura": "boa", "descricao": "Marca um jogador para morrer junto com ele quando o Avenger morrer.", "confianca": "geral" },
+      { "nome": "Bell-Ringer", "traducao": "Sineiro", "tipo": "avancado", "base": "Loudmouth", "evento": null, "aura": null, "descricao": "Papel de suporte da árvore do Loudmouth.", "confianca": "incerto" },
+      { "nome": "Fortune Teller", "traducao": "Cartomante", "tipo": "avancado", "base": "Loudmouth", "evento": null, "aura": null, "descricao": "A partir da 2ª noite entrega duas cartas a jogadores, que podem usá-las para revelar o próprio papel; se a Fortune Teller morrer, quem tem carta não usada é revelado.", "confianca": "wiki" },
+      { "nome": "Cowardly Lion", "traducao": "Leão Covarde", "tipo": "avancado", "base": "Loudmouth", "evento": "Emerald Village", "aura": null, "descricao": "Acumula coragem nos dias em que não vota; uma vez, depois de morto, pode votar com tantos votos quanto a coragem acumulada.", "confianca": "wiki" },
+
+      { "nome": "Flower Child", "traducao": "Criança das Flores", "tipo": "base", "base": null, "evento": null, "aura": "boa", "descricao": "Uma vez por partida protege um jogador de ser linchado.", "confianca": "wiki" },
+      { "nome": "Pacifist", "traducao": "Pacifista", "tipo": "avancado", "base": "Flower Child", "evento": null, "aura": null, "descricao": "Uma vez por partida vê o papel de um jogador durante o dia e cancela a votação daquele dia.", "confianca": "wiki" },
+      { "nome": "Moon Lady", "traducao": "Dama da Lua", "tipo": "avancado", "base": "Flower Child", "evento": null, "aura": null, "descricao": "Na discussão escolhe dois jogadores; só eles podem receber votos naquele dia.", "confianca": "wiki" },
+
+      { "nome": "Cupid", "traducao": "Cupido", "tipo": "base", "base": null, "evento": null, "aura": "boa", "descricao": "Liga dois jogadores como apaixonados: se um morre, o outro também; o casal passa a ter condição de vitória própria (terceira parte).", "confianca": "geral" },
+
+      { "nome": "Cursed", "traducao": "Amaldiçoado", "tipo": "base", "base": null, "evento": null, "aura": "boa", "descricao": "Aldeão que vira lobisomem se for atacado pelos lobos.", "confianca": "wiki" },
+      { "nome": "Grave Robber", "traducao": "Ladrão de Túmulos", "tipo": "avancado", "base": "Cursed", "evento": null, "aura": null, "descricao": "Assume o papel de um jogador morto.", "confianca": "geral" },
+
+      { "nome": "President", "traducao": "Presidente", "tipo": "especial", "base": null, "evento": null, "aura": "boa", "descricao": "Identidade conhecida por todos; se o President morrer, a Vila perde. Não pode ser marcado pelo Junior Werewolf.", "confianca": "geral" },
+      { "nome": "Santa Claus", "traducao": "Papai Noel", "tipo": "especial", "base": null, "evento": "Natal", "aura": null, "descricao": "Papel de evento que distribui presentes.", "confianca": "incerto" },
+      { "nome": "Pumpkin King", "traducao": "Rei Abóbora", "tipo": "especial", "base": null, "evento": "Halloween", "aura": null, "descricao": "Papel de evento que distribui presentes.", "confianca": "incerto" },
+      { "nome": "Rainmaker", "traducao": "Fazedor de Chuva", "tipo": "especial", "base": null, "evento": null, "aura": null, "descricao": "Papel da Vila listado na wiki; habilidade não confirmada.", "confianca": "incerto" }
+    ],
+
+    "lobisomens": [
+      { "nome": "Werewolf", "traducao": "Lobisomem", "tipo": "base", "base": null, "evento": null, "aura": "ma", "descricao": "Conversa e vota com os outros lobos para matar alguém toda noite.", "confianca": "wiki" },
+
+      { "nome": "Junior Werewolf", "traducao": "Lobisomem Júnior", "tipo": "base", "base": null, "evento": null, "aura": "ma", "descricao": "Lobo comum que, ao morrer, escolhe um não-lobo para morrer junto (não pode ser o President).", "confianca": "wiki" },
+      { "nome": "Split Wolf", "traducao": "Lobo Dividido", "tipo": "avancado", "base": "Junior Werewolf", "evento": null, "aura": "ma", "descricao": "Variante do Junior Werewolf que marca jogadores ligados à própria morte.", "confianca": "incerto" },
+      { "nome": "Kitten Wolf", "traducao": "Lobo Filhote", "tipo": "avancado", "base": "Junior Werewolf", "evento": null, "aura": "ma", "descricao": "Lobo comum; quando morre, os lobos podem converter um jogador na noite seguinte em vez de matar.", "confianca": "wiki" },
+      { "nome": "Wolffluencer", "traducao": "Lobo Influencer", "tipo": "avancado", "base": "Junior Werewolf", "evento": null, "aura": "ma", "descricao": "Papel da árvore do Junior Werewolf.", "confianca": "incerto" },
+      { "nome": "Candy Wolf", "traducao": "Lobo Doce", "tipo": "avancado", "base": "Junior Werewolf", "evento": "Halloween", "aura": "ma", "descricao": "Lobo de evento que distribui presentes.", "confianca": "incerto" },
+      { "nome": "Yule Wolf", "traducao": "Lobo Natalino", "tipo": "avancado", "base": "Junior Werewolf", "evento": "Natal", "aura": "ma", "descricao": "Lobo de evento da árvore do Junior Werewolf.", "confianca": "incerto" },
+
+      { "nome": "Nightmare Werewolf", "traducao": "Lobisomem Pesadelo", "tipo": "base", "base": null, "evento": null, "aura": "ma", "descricao": "Duas vezes por partida, de dia, faz um jogador dormir na noite seguinte (fica sem usar habilidade).", "confianca": "wiki" },
+      { "nome": "Voodoo Werewolf", "traducao": "Lobisomem Vodu", "tipo": "avancado", "base": "Nightmare Werewolf", "evento": null, "aura": "ma", "descricao": "Pode silenciar jogadores e dar pesadelos.", "confianca": "geral" },
+      { "nome": "Storm Wolf", "traducao": "Lobo da Tempestade", "tipo": "avancado", "base": "Nightmare Werewolf", "evento": null, "aura": "ma", "descricao": "Embaralha os números dos jogadores.", "confianca": "geral" },
+      { "nome": "Swamp Wolf", "traducao": "Lobo do Pântano", "tipo": "avancado", "base": "Nightmare Werewolf", "evento": null, "aura": "ma", "descricao": "Papel de controle da árvore do Nightmare Werewolf.", "confianca": "incerto" },
+
+      { "nome": "Wolf Shaman", "traducao": "Lobo Xamã", "tipo": "base", "base": null, "evento": null, "aura": "ma", "descricao": "De dia encanta um jogador, que aparece como Wolf Shaman para a maioria dos investigadores na noite seguinte.", "confianca": "wiki" },
+      { "nome": "Wolf Trickster", "traducao": "Lobo Trapaceiro", "tipo": "avancado", "base": "Wolf Shaman", "evento": null, "aura": "ma", "descricao": "Papel de disfarce da árvore do Wolf Shaman.", "confianca": "incerto" },
+      { "nome": "Confusion Wolf", "traducao": "Lobo da Confusão", "tipo": "avancado", "base": "Wolf Shaman", "evento": null, "aura": "ma", "descricao": "Papel de enganação da árvore do Wolf Shaman.", "confianca": "incerto" },
+      { "nome": "Wolf Scribe", "traducao": "Lobo Escriba", "tipo": "avancado", "base": "Wolf Shaman", "evento": null, "aura": "ma", "descricao": "Papel da árvore do Wolf Shaman.", "confianca": "incerto" },
+
+      { "nome": "Shadow Wolf", "traducao": "Lobo das Sombras", "tipo": "base", "base": null, "evento": null, "aura": "ma", "descricao": "Uma vez por partida manipula a votação do dia, escondendo os votos.", "confianca": "geral" },
+      { "nome": "Werewolf Berserk", "traducao": "Lobisomem Berserker", "tipo": "avancado", "base": "Shadow Wolf", "evento": null, "aura": "ma", "descricao": "Ativa um frenesi: o ataque também atinge quem protege ou visita o alvo.", "confianca": "geral" },
+      { "nome": "Toxic Wolf", "traducao": "Lobo Tóxico", "tipo": "avancado", "base": "Shadow Wolf", "evento": null, "aura": "ma", "descricao": "Papel da árvore do Shadow Wolf.", "confianca": "incerto" },
+      { "nome": "Snatcher Wolf", "traducao": "Lobo Ladrão", "tipo": "avancado", "base": "Shadow Wolf", "evento": null, "aura": "ma", "descricao": "Papel da árvore do Shadow Wolf.", "confianca": "incerto" },
+
+      { "nome": "Guardian Wolf", "traducao": "Lobo Guardião", "tipo": "base", "base": null, "evento": null, "aura": "ma", "descricao": "Uma vez por partida protege alguém de ser linchado.", "confianca": "geral" },
+      { "nome": "Wolf Pacifist", "traducao": "Lobo Pacifista", "tipo": "avancado", "base": "Guardian Wolf", "evento": null, "aura": "ma", "descricao": "Papel da árvore do Guardian Wolf que interfere na votação.", "confianca": "incerto" },
+      { "nome": "Jelly Wolf", "traducao": "Lobo Gelatina", "tipo": "avancado", "base": "Guardian Wolf", "evento": null, "aura": "ma", "descricao": "Papel protetor da árvore do Guardian Wolf.", "confianca": "incerto" },
+      { "nome": "Gentlewolf", "traducao": "Lobo Cavalheiro", "tipo": "avancado", "base": "Guardian Wolf", "evento": null, "aura": "ma", "descricao": "Uma vez por partida tira 3 votos de um jogador e adiciona 3 a outro, anonimamente. Atualmente indisponível no jogo.", "confianca": "wiki" },
+
+      { "nome": "Alpha Werewolf", "traducao": "Lobisomem Alfa", "tipo": "base", "base": null, "evento": null, "aura": "desconhecida", "descricao": "O voto noturno dele conta duas vezes e pode mandar mensagens privadas ilimitadas aos lobos durante o dia.", "confianca": "wiki" },
+      { "nome": "Stubborn Werewolf", "traducao": "Lobisomem Teimoso", "tipo": "avancado", "base": "Alpha Werewolf", "evento": null, "aura": "desconhecida", "descricao": "Resiste ao primeiro ataque que receber.", "confianca": "wiki" },
+      { "nome": "Wolf Summoner", "traducao": "Lobo Invocador", "tipo": "avancado", "base": "Alpha Werewolf", "evento": null, "aura": "desconhecida", "descricao": "Pode reviver um lobo morto.", "confianca": "geral" },
+      { "nome": "Ghost Wolf", "traducao": "Lobo Fantasma", "tipo": "avancado", "base": "Alpha Werewolf", "evento": null, "aura": "desconhecida", "descricao": "Papel da árvore do Alpha Werewolf.", "confianca": "incerto" },
+
+      { "nome": "Wolf Seer", "traducao": "Lobo Vidente", "tipo": "base", "base": null, "evento": null, "aura": "ma", "descricao": "Vê o papel de um jogador por noite e passa a informação aos lobos; só vota para matar se abrir mão da visão (vira lobo comum).", "confianca": "wiki" },
+      { "nome": "Sorcerer", "traducao": "Feiticeiro", "tipo": "avancado", "base": "Wolf Seer", "evento": null, "aura": null, "descricao": "Vidente do time dos lobos que aparece disfarçado para investigadores.", "confianca": "geral" },
+      { "nome": "Blind Werewolf", "traducao": "Lobisomem Cego", "tipo": "avancado", "base": "Wolf Seer", "evento": null, "aura": "ma", "descricao": "Papel investigativo da árvore do Wolf Seer.", "confianca": "incerto" },
+
+      { "nome": "Party Wolf", "traducao": "Lobo da Festa", "tipo": "base", "base": null, "evento": null, "aura": "ma", "descricao": "Lobo que pode sair na atribuição Random Werewolf.", "confianca": "incerto" },
+      { "nome": "Wolf Magician", "traducao": "Lobo Mágico", "tipo": "avancado", "base": "Party Wolf (provável)", "evento": null, "aura": "ma", "descricao": "Papel do time dos lobos listado na wiki.", "confianca": "incerto" },
+      { "nome": "Firework Wolf", "traducao": "Lobo dos Fogos", "tipo": "especial", "base": null, "evento": "provável evento de Ano Novo", "aura": "ma", "descricao": "Papel do time dos lobos listado na wiki.", "confianca": "incerto" },
+      { "nome": "Werewolf Fan", "traducao": "Fã de Lobisomem", "tipo": "avancado", "base": "Cursed", "evento": null, "aura": null, "descricao": "Joga pelo time dos lobos, mas os lobos não sabem quem ele é.", "confianca": "wiki" },
+      { "nome": "Wolf Time Traveler", "traducao": "Lobo Viajante do Tempo", "tipo": "especial", "base": null, "evento": "modo Time Traveler (Crazy Games)", "aura": "ma", "descricao": "Lobo comum que, uma vez por partida, volta o jogo para o início do dia anterior, desfazendo mortes e habilidades (exceto conversões).", "confianca": "wiki" }
+    ],
+
+    "solo_votacao": [
+      { "nome": "Fool", "traducao": "Bobo", "tipo": "base", "base": null, "evento": null, "aura": "desconhecida", "descricao": "Vence se for linchado pela Vila.", "confianca": "geral" },
+      { "nome": "Headhunter", "traducao": "Caçador de Cabeças", "tipo": "base", "base": null, "evento": null, "aura": "desconhecida", "descricao": "Recebe um alvo e vence se esse alvo for linchado.", "confianca": "geral" },
+      { "nome": "Anarchist", "traducao": "Anarquista", "tipo": "avancado", "base": "não confirmado", "evento": null, "aura": "desconhecida", "descricao": "Cada aldeão inocente morto (por linchamento ou habilidade) o aproxima da vitória; com 3 passos vence na hora. Dias com votação cancelada não contam. Reformulado em nov/2026 (o 'revolt' foi removido).", "confianca": "wiki" }
+    ],
+
+    "solo_assassinos": [
+      { "nome": "Serial Killer", "traducao": "Assassino em Série", "tipo": "base", "base": null, "evento": null, "aura": "desconhecida", "descricao": "Mata um jogador por noite; não morre com o ataque comum dos lobos.", "confianca": "wiki" },
+      { "nome": "Cannibal", "traducao": "Canibal", "tipo": "avancado", "base": "Serial Killer", "evento": null, "aura": "desconhecida", "descricao": "Acumula fome nas noites em que não mata e depois pode matar várias pessoas de uma vez.", "confianca": "geral" },
+      { "nome": "Evil Detective", "traducao": "Detetive Maligno", "tipo": "avancado", "base": "Serial Killer", "evento": null, "aura": "desconhecida", "descricao": "Compara dois jogadores e mata quando eles são de times diferentes.", "confianca": "geral" },
+      { "nome": "Headless Horseman", "traducao": "Cavaleiro sem Cabeça", "tipo": "avancado", "base": "Serial Killer", "evento": "Wolvesween (Halloween)", "aura": "desconhecida", "descricao": "Mata um por noite; não pode ser linchado enquanto houver lobos vivos, mas pode ser morto pelos lobos à noite.", "confianca": "wiki" },
+      { "nome": "Deep Sea Terror", "traducao": "Terror das Profundezas", "tipo": "avancado", "base": "Serial Killer", "evento": "evento", "aura": "desconhecida", "descricao": "Solo killer de evento da árvore do Serial Killer.", "confianca": "incerto" },
+      { "nome": "Evil Wizard", "traducao": "Mago Maligno", "tipo": "avancado", "base": "Serial Killer", "evento": "Emerald Village (ago/2026)", "aura": "desconhecida", "descricao": "Obriga três jogadores a votar em um alvo; se todos obedecerem e o alvo sobreviver, ele morre à noite; quem desobedecer sofre a consequência.", "confianca": "wiki" },
+
+      { "nome": "Arsonist", "traducao": "Incendiário", "tipo": "base", "base": null, "evento": null, "aura": "desconhecida", "descricao": "Toda noite encharca 2 jogadores com gasolina ou incendeia todos os encharcados; ambas as ações ignoram proteção.", "confianca": "wiki" },
+      { "nome": "Bomber", "traducao": "Bombardeiro", "tipo": "avancado", "base": "Arsonist", "evento": null, "aura": "desconhecida", "descricao": "Coloca bombas que explodem atingindo um grupo de jogadores vizinhos.", "confianca": "geral" },
+      { "nome": "Alchemist", "traducao": "Alquimista", "tipo": "avancado", "base": "Arsonist", "evento": null, "aura": "desconhecida", "descricao": "Distribui poções (uma delas é a poção preta, letal); avisa as vítimas.", "confianca": "geral" },
+      { "nome": "Siren", "traducao": "Sereia", "tipo": "avancado", "base": "Arsonist", "evento": null, "aura": "desconhecida", "descricao": "Encanta três jogadores; na noite seguinte mata até dois deles ou encanta três novos. Encantados morrem se a Siren morrer. Também vence se todos os vivos estiverem encantados.", "confianca": "wiki" },
+      { "nome": "Evil Santa", "traducao": "Papai Noel Maligno", "tipo": "avancado", "base": "Arsonist", "evento": "Natal", "aura": "desconhecida", "descricao": "Escolhe dois jogadores para uma troca de presentes; cada um decide em segredo se manda um presente mortal. Se ninguém mandar, um morre aleatoriamente.", "confianca": "wiki" },
+      { "nome": "Evil Cupid", "traducao": "Cupido Maligno", "tipo": "avancado", "base": "Arsonist", "evento": "Dia dos Namorados", "aura": "desconhecida", "descricao": "Toda noite mata um jogador ou liga dois jogadores em segredo (se um morre, o outro também).", "confianca": "wiki" },
+
+      { "nome": "Corruptor", "traducao": "Corruptor", "tipo": "base", "base": null, "evento": null, "aura": "desconhecida", "descricao": "Toda noite 'glitcha' um jogador, que fica impedido de agir e morre.", "confianca": "geral" },
+      { "nome": "Illusionist", "traducao": "Ilusionista", "tipo": "avancado", "base": "Corruptor", "evento": null, "aura": "desconhecida", "descricao": "Disfarça jogadores e depois pode matar os disfarçados.", "confianca": "geral" },
+      { "nome": "Blight", "traducao": "Praga", "tipo": "avancado", "base": "Corruptor", "evento": null, "aura": "desconhecida", "descricao": "Infecta um jogador por noite; a infecção passa para quem o investigar. Pode marcar infectados para morrer ou matá-los na discussão.", "confianca": "wiki" },
+      { "nome": "Shapeshifter", "traducao": "Metamorfo", "tipo": "avancado", "base": "Corruptor", "evento": null, "aura": "desconhecida", "descricao": "Mata um jogador por noite e assume a aparência do papel dele; o corpo da vítima mostra o disfarce anterior (mudança de nov/2026).", "confianca": "wiki" },
+      { "nome": "Dracula", "traducao": "Drácula", "tipo": "avancado", "base": "Corruptor", "evento": "provável evento (Vampire Court)", "aura": null, "descricao": "Papel recente da árvore do Corruptor.", "confianca": "incerto" },
+
+      { "nome": "Bandit", "traducao": "Bandido", "tipo": "base", "base": null, "evento": null, "aura": "desconhecida", "descricao": "Converte um aldeão ou solo de votação em Accomplice e mata com ele; se tentar converter um lobo, mata o lobo. Se o Accomplice morrer, escolhe outro.", "confianca": "wiki" },
+      { "nome": "Accomplice", "traducao": "Cúmplice", "tipo": "especial", "base": "Bandit (conversão)", "evento": null, "aura": "desconhecida", "descricao": "Jogador convertido pelo Bandit; mata junto com ele e vence com o time dos Bandidos.", "confianca": "wiki" },
+      { "nome": "Sect Leader", "traducao": "Líder da Seita", "tipo": "avancado", "base": "Bandit", "evento": null, "aura": "desconhecida", "descricao": "Converte jogadores para a seita; vence quando todos os vivos são da seita.", "confianca": "geral" },
+      { "nome": "Zombie", "traducao": "Zumbi", "tipo": "avancado", "base": "Bandit", "evento": null, "aura": "desconhecida", "descricao": "Morde jogadores, transformando-os em zumbis.", "confianca": "geral" },
+
+      { "nome": "Instigator", "traducao": "Instigador", "tipo": "avancado", "base": "não confirmado", "evento": null, "aura": "boa", "descricao": "No início recruta um aldeão e um lobo/solo killer, que passam a vencer só com ele; os dois recrutas estão ligados (se um morre, o outro também).", "confianca": "wiki" }
+    ],
+
+    "sem_time": [
+      { "nome": "Lurker", "traducao": "Espreitador", "tipo": "avancado", "base": "Cursed", "evento": null, "aura": null, "descricao": "Começa sem time; ao ser atacado ou convertido, entra para o time de quem o atingiu e vence com ele.", "confianca": "wiki" },
+      { "nome": "Admirer", "traducao": "Admirador", "tipo": "avancado", "base": "Cursed", "evento": "Dia dos Namorados", "aura": null, "descricao": "Recebe um alvo no início; uma vez pode protegê-lo de uma tentativa de morte por um dia inteiro; vence com o 'amor da vida'.", "confianca": "wiki" }
+    ]
+  },
+
+  "modos_especiais": [
+    { "nome": "Time Traveler", "traducao": "Viajante do Tempo", "equipe": "vila", "modo": "Time Traveler (Crazy Games)", "descricao": "Uma vez por partida volta o jogo ao início da discussão, desfazendo mortes e habilidades (exceto conversões para times não-aldeões).", "confianca": "wiki" },
+    { "nome": "Wolf Time Traveler", "traducao": "Lobo Viajante do Tempo", "equipe": "lobisomens", "modo": "Time Traveler (Crazy Games)", "descricao": "Ver lista de lobisomens.", "confianca": "wiki" },
+    { "nome": "Assassin", "traducao": "Assassino", "equipe": "solo", "modo": "Assassins Convention", "descricao": "Toda noite os Assassins competem para adivinhar papéis; o mais rápido ganha uma coroa. De dia, por consenso, eliminam um jogador. Mortos votam no vencedor final.", "confianca": "wiki" }
+  ],
+
+  "wolvesville_classic_e_outros": {
+    "observacao": "Papéis que a wiki inclui na contagem total mas que são da versão Classic ou de modos antigos/específicos. Habilidades não reconferidas.",
+    "classic": ["Little Girl", "Handsome Prince", "Mad Scientist", "Doppelganger", "Wise Man", "Idiot", "Leprous Human"],
+    "outros_listados_na_wiki": ["Drunk", "Journalist", "Sibling", "Sister", "Sect Hunter", "Lone Wolf"]
+  },
+
+  "atribuicoes_aleatorias": [
+    { "nome": "Random Regular Villager", "descricao": "Sorteia entre Villager, Doctor, Bodyguard, Red Lady, Priest, Aura Seer, Sheriff, Mayor, Witch, Beast Hunter, Loudmouth, Flower Child (ou os avançados deles)." },
+    { "nome": "Random Strong Villager", "descricao": "Sorteia entre aldeões fortes como Vigilante, Jailer, Seer, Detective, Medium e Soulbinder (ou os avançados deles)." },
+    { "nome": "Random Werewolf", "descricao": "Sorteia entre Werewolf, Junior Werewolf, Nightmare Werewolf, Wolf Shaman, Guardian Wolf, Shadow Wolf, Alpha Werewolf, Wolf Seer, Party Wolf (ou os avançados deles). Custa 250 de ouro no modo personalizado." },
+    { "nome": "Random Killer", "descricao": "Sorteia entre Serial Killer, Arsonist, Corruptor, Bandit (ou os avançados deles). Custa 250 de ouro no modo personalizado." },
+    { "nome": "Random Voting", "descricao": "Sorteia um solo de votação (Fool, Headhunter, Anarchist)." },
+    { "nome": "Random Other", "descricao": "Usado em setups de Crazy Games." },
+    { "nome": "Custom Random Role", "descricao": "Sorteio personalizado definido pelo criador da sala." }
+  ]
+}

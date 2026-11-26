@@ -1,0 +1,1769 @@
+/* Noite na Vila: grimório de tarô.
+   Base para celular; a mesa de ritual do computador está no fim do arquivo. */
+
+:root {
+  --soot: #0b0706;
+  --coal: #170e0a;
+  --bone: #e6d6ac;
+  --bone-bright: #f4e9c8;
+  --muted: #b3a17c;
+  --ink: #1d130c;
+  --gold: #a8863f;
+  --gold-soft: rgb(168 134 63 / 0.45);
+  --blood: #7d1812;
+  --blood-bright: #c0301f;
+  --flame: #ffab4a;
+  --title: 'Pirata One', Georgia, serif;
+  --body: 'EB Garamond', Georgia, serif;
+  --card-h: 250px;
+  --spring: cubic-bezier(0.2, 1.5, 0.4, 1);
+  color-scheme: dark;
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--soot);
+  color: var(--bone);
+  -webkit-tap-highlight-color: transparent;
+}
+
+p,
+h1,
+h2,
+figure {
+  margin: 0;
+}
+
+h1,
+h2 {
+  font-family: var(--title);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: 1.9rem;
+  color: var(--bone-bright);
+  text-shadow: 0 0 22px rgb(255 130 40 / 0.35);
+}
+
+h2 {
+  font-size: 1.45rem;
+  color: var(--bone-bright);
+}
+
+.title {
+  font-size: clamp(3rem, 12vw, 5.6rem);
+}
+
+.display {
+  font-size: 2.5rem;
+  text-align: center;
+}
+
+.big-name {
+  font-size: clamp(2.8rem, 12vw, 4rem);
+  color: var(--bone-bright);
+  overflow-wrap: anywhere;
+}
+
+.lead {
+  text-wrap: balance;
+  font-style: italic;
+  font-size: 1.2rem;
+}
+
+.eyebrow {
+  color: var(--muted);
+  font-style: italic;
+  font-size: 0.95rem;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.headline {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--bone-bright);
+}
+
+.error {
+  color: #ff8d7a;
+}
+
+/* ================= telas ================= */
+
+.page {
+  position: relative;
+  z-index: 1;
+  min-height: 100dvh;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: max(8px, env(safe-area-inset-top)) 16px max(18px, env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-x: clip;
+  animation: arrive 0.55s ease-out backwards;
+}
+
+@keyframes arrive {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 44px;
+}
+
+.tag {
+  font-family: var(--title);
+  font-size: 1.1rem;
+  border: 1px solid var(--gold-soft);
+  border-radius: 99px;
+  padding: 1px 14px 2px;
+  box-shadow: 0 0 0 3px var(--soot), 0 0 0 4px var(--gold-soft);
+  margin-right: 4px;
+}
+
+/* ================= controles ================= */
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  min-height: 48px;
+  padding: 8px 20px;
+  border: 0;
+  border-radius: 6px;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+:focus-visible {
+  outline: 2px solid var(--flame);
+  outline-offset: 3px;
+}
+
+.primary,
+.secondary {
+  position: relative;
+  overflow: hidden;
+  font-family: var(--title);
+  font-size: 1.4rem;
+  letter-spacing: 0.04em;
+  transition:
+    translate 0.25s var(--spring),
+    box-shadow 0.25s,
+    filter 0.25s,
+    opacity 0.25s;
+}
+
+/* Selo de cera. */
+.primary {
+  color: var(--bone-bright);
+  background: radial-gradient(120% 180% at 50% 0%, #a3261b, #6d130e 55%, #430a07);
+  box-shadow:
+    inset 0 0 0 1px rgb(244 233 200 / 0.28),
+    0 0 0 3px var(--soot),
+    0 0 0 4px var(--gold),
+    0 10px 24px rgb(0 0 0 / 0.6);
+}
+
+.secondary {
+  font-size: 1.2rem;
+  background: rgb(20 11 8 / 0.78);
+  box-shadow:
+    inset 0 0 0 1px var(--gold-soft),
+    inset 0 0 0 4px rgb(11 7 6 / 0.9),
+    inset 0 0 0 5px rgb(168 134 63 / 0.22);
+}
+
+.primary::before,
+.secondary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 35%, rgb(255 214 150 / 0.24), transparent 65%);
+  translate: -110% 0;
+}
+
+.primary:not(:disabled):hover,
+.secondary:not(:disabled):hover {
+  translate: 0 -2px;
+  filter: brightness(1.18);
+}
+
+.primary:not(:disabled):hover::before,
+.secondary:not(:disabled):hover::before {
+  translate: 110% 0;
+  transition: translate 0.7s ease;
+}
+
+.primary:not(:disabled):active,
+.secondary:not(:disabled):active {
+  translate: 0 1px;
+  filter: brightness(0.92);
+}
+
+.primary:disabled {
+  opacity: 0.42;
+  filter: saturate(0.6);
+}
+
+/* Enquanto a trava de toque duplo conta, o selo se enche. */
+.primary.arming {
+  opacity: 0.8;
+}
+
+.primary.arming::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 4px;
+  width: 100%;
+  background: var(--flame);
+  transform-origin: left;
+  animation: arm var(--arm) linear both;
+}
+
+@keyframes arm {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+.link {
+  background: none;
+  min-height: 44px;
+  padding: 4px 2px;
+  font-style: italic;
+  color: var(--muted);
+}
+
+.link:hover {
+  color: var(--bone-bright);
+}
+
+.icon {
+  min-width: 42px;
+  min-height: 42px;
+  padding: 0;
+  background: rgb(168 134 63 / 0.12);
+  border: 1px solid var(--gold-soft);
+}
+
+.icon:disabled {
+  opacity: 0.25;
+}
+
+input:not([type='checkbox']),
+select {
+  min-height: 48px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--gold-soft);
+  background: rgb(8 4 3 / 0.75);
+}
+
+input::placeholder {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.top-tools {
+  position: fixed;
+  z-index: 20;
+  top: max(8px, env(safe-area-inset-top));
+  left: 50%;
+  translate: -50% 0;
+  display: flex;
+  gap: 8px;
+}
+
+.top-tool {
+  width: 44px;
+  min-height: 44px;
+  padding: 10px;
+  border-radius: 50%;
+  color: var(--muted);
+  background: rgb(11 7 6 / 0.7);
+  border: 1px solid var(--gold-soft);
+}
+
+.top-tool:hover {
+  color: var(--bone-bright);
+  border-color: var(--gold);
+}
+
+.top-tool svg {
+  width: 100%;
+  display: block;
+}
+
+/* Passo a passo por cima do jogo. */
+.veil {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  overflow-y: auto;
+  padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+  background: rgb(4 2 2 / 0.86);
+}
+
+.sheet {
+  width: min(400px, 100%);
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  border-radius: 8px;
+  background: var(--soot);
+  border: 1px solid var(--gold);
+}
+
+.sheet ol {
+  margin: 0;
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.row > button {
+  flex: 1;
+}
+
+form.row > button {
+  flex: 0 0 auto;
+}
+
+.between {
+  justify-content: space-between;
+}
+
+.grow {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: min(360px, 100%);
+  margin: 0 auto;
+}
+
+.notice {
+  border-left: 3px solid var(--blood-bright);
+  background: rgb(125 24 18 / 0.28);
+  padding: 8px 12px;
+}
+
+/* ================= pergaminho ================= */
+
+.parchment {
+  color: var(--ink);
+  background: radial-gradient(130% 130% at 50% 45%, #eadcb4 45%, #b49660);
+  border-radius: 4px;
+  box-shadow:
+    inset 0 0 0 1px var(--ink),
+    inset 0 0 0 4px #d9c592,
+    inset 0 0 0 5px rgb(29 19 12 / 0.55),
+    0 14px 30px rgb(0 0 0 / 0.6);
+}
+
+.parchment .notice {
+  background: rgb(125 24 18 / 0.12);
+}
+
+.outcome {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 112px;
+  padding: 12px 18px;
+  font-size: 1.2rem;
+  text-align: center;
+  animation: unroll 0.6s ease-out backwards;
+}
+
+.outcome__card {
+  height: 88px;
+  border-radius: 4px;
+  box-shadow: 0 4px 10px rgb(0 0 0 / 0.5);
+}
+
+@keyframes unroll {
+  from {
+    clip-path: inset(48% 0 48% 0);
+    opacity: 0;
+  }
+  to {
+    clip-path: inset(-30px);
+  }
+}
+
+/* ================= carta ================= */
+
+/* Atenção: nada de filter, opacity ou overflow nos elementos com preserve-3d,
+   senão o navegador achata a carta e mostra o verso espelhado. */
+.tarot {
+  width: calc(var(--card-h) * 0.5814);
+  aspect-ratio: 200 / 344;
+  flex: none;
+  perspective: 900px;
+  container-type: inline-size;
+}
+
+.tarot__tilt,
+.tarot__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.tarot__tilt {
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.25s ease-out;
+}
+
+.tarot__face {
+  position: absolute;
+  inset: 0;
+  border-radius: 4.5cqw;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow:
+    0 6cqw 12cqw rgb(0 0 0 / 0.65),
+    0 0 14cqw rgb(255 120 30 / 0.12);
+}
+
+.tarot__face img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+}
+
+.tarot__face--back {
+  transform: rotateY(180deg);
+}
+
+.tarot--back-only .tarot__face--back {
+  transform: none;
+}
+
+.tarot--flip .tarot__inner {
+  animation: flip 1.05s cubic-bezier(0.6, -0.2, 0.2, 1.15) var(--delay) both;
+}
+
+@keyframes flip {
+  from {
+    transform: rotateY(180deg);
+  }
+  to {
+    transform: rotateY(0deg);
+  }
+}
+
+.tarot--floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  50% {
+    translate: 0 -8px;
+  }
+}
+
+.tarot__numeral,
+.tarot__name {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  font-family: var(--title);
+  font-weight: 400;
+  line-height: 1;
+  text-shadow: none;
+  translate: 0 -50%;
+}
+
+.tarot__numeral {
+  top: 7.600%;
+  font-size: 9cqw;
+  color: var(--ink);
+}
+
+.tarot__name {
+  top: 91.600%;
+  font-size: 13cqw;
+  color: var(--blood);
+  letter-spacing: 0.04em;
+}
+
+.tarot__name--long {
+  font-size: 10cqw;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.tarot__face--back .tarot__numeral,
+.tarot__face--back .tarot__name {
+  font-size: 10cqw;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #b9944a;
+}
+
+.tarot__face--back .tarot__numeral {
+  top: 11%;
+}
+
+.tarot__face--back .tarot__name {
+  top: 89%;
+}
+
+.tarot__gleam {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at var(--gx, 50%) var(--gy, 30%),
+    rgb(255 236 190 / 0.38),
+    transparent 55%
+  );
+  mix-blend-mode: soft-light;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tarot:hover .tarot__gleam {
+  opacity: 1;
+}
+
+/* ================= velas ================= */
+
+.candle {
+  --candle-h: 86px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  width: 20px;
+  flex: none;
+}
+
+.candle--tall {
+  --candle-h: 132px;
+}
+
+.candle__top {
+  position: relative;
+  width: 100%;
+  height: 38px;
+}
+
+.candle__wick {
+  position: absolute;
+  bottom: -1px;
+  left: calc(50% - 1px);
+  width: 2px;
+  height: 9px;
+  background: #3a2314;
+}
+
+.candle__flame {
+  position: absolute;
+  bottom: 6px;
+  left: calc(50% - 6px);
+  width: 12px;
+  height: 27px;
+  border-radius: 50% 50% 50% 50% / 68% 68% 32% 32%;
+  background: radial-gradient(ellipse at 50% 74%, #fff6d2 18%, #ffb347 48%, #d9531c 74%, transparent);
+  transform-origin: 50% 100%;
+  animation: flame 0.9s ease-in-out var(--delay) infinite alternate;
+}
+
+.candle__glow {
+  position: absolute;
+  left: 50%;
+  bottom: -30px;
+  width: 110px;
+  height: 110px;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(255 140 40 / 0.28), transparent 66%);
+  animation: flicker 3.2s steps(24) var(--delay) infinite;
+}
+
+.candle__wax {
+  position: relative;
+  width: 100%;
+  height: calc(10px + var(--candle-h) * var(--wax));
+  border-radius: 4px 4px 1px 1px;
+  background: linear-gradient(90deg, #0d0807, #2b1c16 55%, #4a2a16 82%, #160d0a);
+  transition: height 1s linear;
+}
+
+.candle__wax::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 3px;
+  width: 5px;
+  height: min(26px, 70%);
+  border-radius: 0 0 5px 5px;
+  background: #35221a;
+  box-shadow: 8px -9px 0 -1px #35221a;
+}
+
+.candle__dish {
+  width: 34px;
+  height: 8px;
+  border-radius: 3px 3px 50% 50%;
+  background: linear-gradient(#8a6c30, #3a2b12);
+}
+
+.candle--out .candle__flame,
+.candle--out .candle__glow {
+  display: none;
+}
+
+.candle--timer {
+  height: 190px;
+  --candle-h: 118px;
+}
+
+.candle--solo {
+  --candle-h: 74px;
+  margin: 8px 0;
+}
+
+@keyframes flame {
+  0% {
+    transform: scale(1, 1) skewX(0);
+  }
+  35% {
+    transform: scale(0.9, 1.14) skewX(4deg);
+  }
+  70% {
+    transform: scale(1.06, 0.9) skewX(-5deg);
+  }
+  100% {
+    transform: scale(0.96, 1.08) skewX(2deg);
+  }
+}
+
+@keyframes flicker {
+  0%,
+  100% {
+    opacity: 0.9;
+  }
+  12% {
+    opacity: 0.62;
+  }
+  18% {
+    opacity: 1;
+  }
+  37% {
+    opacity: 0.74;
+  }
+  55% {
+    opacity: 0.96;
+  }
+  71% {
+    opacity: 0.58;
+  }
+  83% {
+    opacity: 0.9;
+  }
+}
+
+.altar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 8px;
+}
+
+.altar > .tarot {
+  margin: 0 10px;
+}
+
+/* ================= cenário ================= */
+
+.atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 58%, #2c1a10, #150c08 45%, #070403 82%);
+}
+
+.atmosphere > * {
+  position: absolute;
+}
+
+.atmosphere__dawn {
+  inset: 0;
+  opacity: 0;
+  transition: opacity 2.4s ease;
+  background:
+    radial-gradient(circle at 50% 86%, rgb(224 92 36 / 0.9) 0 5%, transparent 5.400%),
+    radial-gradient(ellipse 90% 52% at 50% 100%, #8e2a15, #47110c 50%, transparent 78%),
+    linear-gradient(#150a10, #2a0f0e);
+}
+
+.atmosphere--day .atmosphere__dawn {
+  opacity: 1;
+}
+
+.atmosphere__candlelight {
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 68%, rgb(255 150 50 / 0.17), transparent 56%);
+  animation: flicker 4.4s steps(30) infinite;
+}
+
+.atmosphere__circle {
+  left: 50%;
+  top: 52%;
+  width: max(118vmin, 460px);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  stroke: var(--gold);
+  opacity: 0.2;
+}
+
+.atmosphere__ring {
+  animation: turn 180s linear infinite;
+}
+
+.atmosphere__ring--reverse {
+  animation-duration: 120s;
+  animation-direction: reverse;
+}
+
+@keyframes turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.atmosphere__star {
+  stroke: #b32a1d;
+  stroke-dasharray: 1;
+  animation: draw 4s ease-out backwards;
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+
+.atmosphere__village {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: clamp(110px, 24vh, 240px);
+  background-repeat: repeat-x;
+  background-position: bottom center;
+  background-size: auto 100%;
+  opacity: 0;
+  translate: 0 40%;
+  transition:
+    opacity 2s ease,
+    translate 2s ease;
+}
+
+.atmosphere--day .atmosphere__village {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.atmosphere__smoke {
+  inset: 56% -25% -12%;
+  filter: blur(40px);
+  opacity: 0.22;
+  background:
+    radial-gradient(ellipse 22% 40% at 26% 70%, #7d5a45, transparent 70%),
+    radial-gradient(ellipse 26% 36% at 72% 60%, #5c3a30, transparent 70%);
+  animation: smoke 17s ease-in-out infinite alternate;
+}
+
+@keyframes smoke {
+  to {
+    transform: translate(10%, -6%);
+  }
+}
+
+.ember {
+  bottom: -2%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--flame);
+  box-shadow: 0 0 9px 2px #ff7b1c;
+  opacity: 0;
+  animation: rise 10s linear infinite;
+}
+
+@keyframes rise {
+  12% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translate(var(--drift), -78vh) scale(0.4);
+    opacity: 0;
+  }
+}
+
+.atmosphere__vignette {
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, transparent 42%, rgb(0 0 0 / 0.72));
+}
+
+/* ================= início ================= */
+
+.home {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  text-align: center;
+}
+
+.home__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+}
+
+.logo {
+  width: min(44vw, 190px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  box-shadow: 0 0 50px rgb(192 48 31 / 0.35);
+  animation: pulse 6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    box-shadow: 0 0 80px rgb(192 48 31 / 0.6);
+  }
+}
+
+.fan {
+  --card-h: 150px;
+  display: grid;
+  justify-items: center;
+  width: 100%;
+  min-height: 200px;
+  padding-top: 12px;
+}
+
+.fan__card {
+  grid-area: 1 / 1;
+  rotate: calc(var(--i) * 9deg);
+  translate: calc(var(--i) * 28px) calc(var(--i) * var(--i) * 6px);
+  transform-origin: 50% 120%;
+  transition:
+    translate 0.4s var(--spring),
+    scale 0.4s var(--spring);
+}
+
+.fan__card:hover {
+  z-index: 2;
+  translate: calc(var(--i) * 32px) calc(var(--i) * var(--i) * 6px - 22px);
+  scale: 1.08;
+}
+
+/* ================= mesa do ritual ================= */
+
+.ritual {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ritual__top,
+.ritual__bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.ritual__bottom {
+  margin-top: auto;
+  gap: 14px;
+  padding-top: 6px;
+}
+
+.ritual__bottom > .primary,
+.ritual__bottom > .secondary,
+.ritual__bottom > .parchment {
+  width: min(380px, 100%);
+}
+
+.ritual--handoff .ritual__top {
+  flex: 1;
+  justify-content: center;
+}
+
+.description {
+  max-width: 32ch;
+  margin-top: 4px;
+}
+
+.question {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--bone-bright);
+  max-width: 34ch;
+}
+
+.sigil {
+  width: 130px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  box-shadow: 0 0 40px rgb(192 48 31 / 0.4);
+}
+
+.seats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+/* No celular a roda só aparece quando serve para alguma coisa. */
+.ritual--handoff .seats,
+.ritual--secret:not(.ritual--picking) .seats,
+.ritual--picking .seat--idle {
+  display: none;
+}
+
+.seat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 5px 10px 5px 6px;
+  border-radius: 99px;
+  border: 1px solid var(--gold-soft);
+  background: rgb(16 9 6 / 0.82);
+  text-align: left;
+  position: relative;
+}
+
+button.seat {
+  min-height: 48px;
+  transition:
+    scale 0.3s var(--spring),
+    border-color 0.2s,
+    box-shadow 0.2s,
+    background-color 0.2s;
+}
+
+button.seat:hover {
+  scale: 1.06;
+  border-color: var(--gold);
+  box-shadow: 0 0 18px rgb(255 140 40 / 0.35);
+}
+
+button.seat[aria-pressed='true'] {
+  border-color: var(--blood-bright);
+  background: rgb(125 24 18 / 0.62);
+  box-shadow:
+    0 0 0 1px var(--blood-bright),
+    0 0 24px rgb(192 48 31 / 0.7);
+}
+
+.seat__sigil {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-family: var(--title);
+  font-size: 1.25rem;
+  background: var(--coal);
+  border: 1px solid var(--gold);
+  box-shadow:
+    0 0 0 2px var(--soot),
+    0 0 0 3px var(--gold-soft);
+}
+
+button.seat[aria-pressed='true'] .seat__sigil {
+  background: var(--blood);
+  border-color: var(--bone);
+}
+
+.seat__label {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.15;
+}
+
+.seat__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.seat small {
+  color: var(--muted);
+  font-style: italic;
+  font-size: 0.8rem;
+}
+
+.seat--current {
+  border-color: var(--blood-bright);
+}
+
+.seat--current .seat__sigil {
+  border-color: var(--blood-bright);
+  animation: summon 2.2s ease-in-out infinite;
+}
+
+@keyframes summon {
+  50% {
+    box-shadow:
+      0 0 0 3px var(--soot),
+      0 0 0 5px var(--blood-bright),
+      0 0 22px 6px rgb(192 48 31 / 0.8);
+  }
+}
+
+.seat--out {
+  border-style: dashed;
+  color: #8d7d62;
+}
+
+.seat--out .seat__name {
+  text-decoration: line-through;
+  text-decoration-color: var(--blood-bright);
+  text-decoration-thickness: 2px;
+}
+
+.seat--out .seat__sigil {
+  opacity: 0.45;
+}
+
+.seat__badge {
+  position: absolute;
+  top: -9px;
+  right: 6px;
+  padding: 0 9px;
+  border-radius: 99px;
+  font-size: 0.85rem;
+  color: var(--bone-bright);
+  background: var(--blood);
+  border: 1px solid var(--bone);
+  animation: stamp 0.45s var(--spring) calc(0.4s + var(--order) * 0.07s) backwards;
+}
+
+@keyframes stamp {
+  from {
+    scale: 2.4;
+    opacity: 0;
+  }
+}
+
+/* ================= amanhecer, veredito e discussão ================= */
+
+.death {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  animation: shake 0.55s ease-in-out 1.75s;
+}
+
+@keyframes shake {
+  20% {
+    translate: -9px 0;
+  }
+  40% {
+    translate: 8px 0;
+  }
+  60% {
+    translate: -5px 0;
+  }
+  80% {
+    translate: 3px 0;
+  }
+}
+
+.deaths {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+
+.deaths--many .death {
+  max-width: 200px;
+}
+
+.deaths--many .fallen__card {
+  --card-h: 180px;
+}
+
+.fallen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.fallen__card {
+  --card-h: 220px;
+  position: relative;
+}
+
+.fallen__slash {
+  position: absolute;
+  top: 50%;
+  left: -14%;
+  width: 128%;
+  height: 7px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, #9d180f 14%, #d1321f 52%, #7d1008 88%, transparent);
+  border-radius: 50%;
+  transform: rotate(-52deg);
+  animation: slash 0.28s cubic-bezier(0.7, 0, 0.2, 1) 1.75s backwards;
+}
+
+@keyframes slash {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.blood-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(ellipse at center, transparent 30%, rgb(150 12 6 / 0.85));
+  animation: bleed 2.2s ease-out 1.75s;
+}
+
+@keyframes bleed {
+  8% {
+    opacity: 1;
+  }
+}
+
+.timer {
+  font-family: var(--title);
+  font-size: 4.6rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--bone-bright);
+  text-shadow: 0 0 30px rgb(255 130 40 / 0.5);
+}
+
+.timer--over {
+  color: #ff6a52;
+  animation: throb 1s ease-in-out infinite;
+}
+
+@keyframes throb {
+  50% {
+    scale: 1.07;
+  }
+}
+
+/* ================= fim de jogo ================= */
+
+.verdict {
+  text-align: center;
+}
+
+.verdict .title {
+  animation: reveal-title 1.4s ease-out backwards;
+}
+
+@keyframes reveal-title {
+  from {
+    opacity: 0;
+    letter-spacing: 0.3em;
+    filter: blur(10px);
+  }
+}
+
+.spread {
+  --card-h: 172px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px 12px;
+}
+
+.spread__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(var(--card-h) * 0.5814);
+  text-align: center;
+}
+
+.spread__item .tarot__face {
+  transition: box-shadow 0.4s;
+}
+
+.spread__item--won .tarot__face--front {
+  box-shadow:
+    0 0 0 2px var(--gold),
+    0 0 26px rgb(255 160 60 / 0.55);
+}
+
+.spread__name {
+  margin-top: 8px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  line-height: 1.15;
+  font-weight: 600;
+}
+
+.page--gameover .actions {
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+/* ================= novo jogo ================= */
+
+.setup {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px 16px;
+  border-radius: 8px;
+  background: rgb(14 8 6 / 0.84);
+  box-shadow:
+    inset 0 0 0 1px var(--gold-soft),
+    inset 0 0 0 5px rgb(11 7 6 / 0.9),
+    inset 0 0 0 6px rgb(168 134 63 / 0.2);
+}
+
+.roster {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.roster__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 4px 4px 6px;
+  border-bottom: 1px solid rgb(168 134 63 / 0.22);
+  animation: summoned 0.45s var(--spring) backwards;
+}
+
+@keyframes summoned {
+  from {
+    opacity: 0;
+    translate: -18px 0;
+  }
+}
+
+.deck {
+  --card-h: 150px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px 8px;
+}
+
+.deck__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  font-style: italic;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.deck__item .tarot {
+  width: min(100%, calc(var(--card-h) * 0.5814));
+  transition:
+    translate 0.35s var(--spring),
+    opacity 0.3s,
+    filter 0.3s;
+}
+
+.deck__item--optional {
+  cursor: pointer;
+}
+
+.deck__item input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.deck__item--optional:hover .tarot {
+  translate: 0 -6px;
+}
+
+.deck__item input:not(:checked) + .tarot {
+  opacity: 0.38;
+  filter: grayscale(1);
+  translate: 0 6px;
+}
+
+.deck__item input:focus-visible + .tarot {
+  outline: 2px solid var(--flame);
+  outline-offset: 3px;
+}
+
+.deck-group {
+  margin: 0;
+  padding: 10px 0 0;
+  border: 0;
+  border-top: 1px solid rgb(168 134 63 / 0.35);
+  min-width: 0;
+}
+
+.deck-group legend {
+  padding-right: 10px;
+  font-weight: 600;
+  color: var(--bone-bright);
+}
+
+.deck-group .deck {
+  padding-top: 8px;
+}
+
+.chosen summary {
+  cursor: pointer;
+}
+
+.chosen ul {
+  margin: 8px 0 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ================= recados e escolha de poder ================= */
+
+.notes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: min(420px, 100%);
+  text-align: left;
+}
+
+.modes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: min(380px, 100%);
+}
+
+.mode {
+  min-height: 44px;
+  padding: 6px 12px;
+  border-radius: 99px;
+  border: 1px solid var(--gold-soft);
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  cursor: pointer;
+}
+
+.mode[aria-pressed='true'] {
+  color: var(--bone-bright);
+  border-color: var(--bone);
+  background: var(--blood);
+}
+
+/* ================= funções e regras ================= */
+
+.guide-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+
+.gallery {
+  --card-h: 200px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 22px;
+}
+
+.gallery__item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.scroll {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 26px 22px;
+  animation: unroll 0.8s ease-out backwards;
+}
+
+.steps {
+  margin: 0;
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ================= computador ================= */
+
+@media (min-width: 700px) {
+  .page--guide,
+  .page--setup {
+    max-width: 1180px;
+  }
+
+  .page--help {
+    max-width: 680px;
+  }
+
+  .page--gameover {
+    max-width: 1240px;
+  }
+
+  .gallery {
+    --card-h: 300px;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  }
+
+  .gallery__item {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+}
+
+@media (min-width: 900px) and (min-height: 560px) {
+  :root {
+    --card-h: clamp(220px, 43dvh, 440px);
+    font-size: 18px;
+  }
+
+  .page--home,
+  .page--game {
+    max-width: 1500px;
+  }
+
+  .page--home {
+    max-width: 1280px;
+    overflow-x: visible;
+  }
+
+  .page--game {
+    min-height: max(100dvh, 560px);
+    gap: 4px;
+  }
+
+  .home {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  .home__intro {
+    flex: 0 0 440px;
+  }
+
+  .fan {
+    --card-h: clamp(250px, 46dvh, 450px);
+    flex: 1;
+    min-height: calc(var(--card-h) + 90px);
+    align-items: center;
+  }
+
+  .fan__card {
+    translate: calc(var(--i) * clamp(34px, 4.200vw, 76px)) calc(var(--i) * var(--i) * 13px);
+    rotate: calc(var(--i) * 9deg);
+  }
+
+  .fan__card:hover {
+    translate: calc(var(--i) * clamp(40px, 4.700vw, 86px)) calc(var(--i) * var(--i) * 13px - 36px);
+  }
+
+  .setup {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: start;
+  }
+
+  .deck {
+    --card-h: 190px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .ritual {
+    position: relative;
+    justify-content: safe center;
+    align-items: center;
+    min-height: 0;
+    gap: clamp(8px, 1.6dvh, 18px);
+  }
+
+  .ritual__top,
+  .ritual__bottom {
+    width: 440px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .ritual__bottom {
+    margin-top: 0;
+  }
+
+  .ritual--handoff .ritual__top {
+    flex: 0 1 auto;
+  }
+
+  .fallen__card {
+    --card-h: clamp(200px, 35dvh, 360px);
+  }
+
+  .sigil {
+    width: clamp(150px, 28dvh, 260px);
+  }
+
+  .deaths--many .fallen__card {
+    --card-h: clamp(150px, 26dvh, 270px);
+  }
+
+  /* Recados e botões a mais pedem uma carta menor. */
+  .ritual--secret:has(.modes) {
+    --card-h: 37dvh;
+  }
+
+  .ritual--secret:has(.notes) {
+    --card-h: 31dvh;
+    gap: 6px;
+  }
+
+  .ritual--secret:has(.notes) .ritual__bottom {
+    gap: 8px;
+  }
+
+  .ritual--secret .notes {
+    gap: 4px;
+    font-size: 0.95rem;
+    line-height: 1.25;
+  }
+
+  /* A roda cerca o centro em dois arcos. */
+  .seats,
+  .ritual--handoff .seats,
+  .ritual--secret:not(.ritual--picking) .seats {
+    display: block;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .ritual--picking .seat--idle {
+    display: flex;
+  }
+
+  .seat,
+  button.seat {
+    --middle: 232px;
+    --arc: clamp(0px, 5vw, 96px);
+    position: absolute;
+    top: calc(3% + var(--t) * 94%);
+    width: min(220px, calc(50% - var(--middle) - var(--arc) - 8px));
+    min-height: 50px;
+    translate: 0 -50%;
+    pointer-events: auto;
+    animation: gather 0.6s ease-out calc(var(--order) * 0.04s) backwards;
+  }
+
+  .seat__name {
+    white-space: normal;
+    overflow-wrap: anywhere;
+    font-size: 0.95rem;
+    line-height: 1.05;
+  }
+
+  .seat--left {
+    right: calc(50% + var(--middle) + var(--bulge) * var(--arc));
+    flex-direction: row-reverse;
+    text-align: right;
+    padding: 5px 6px 5px 12px;
+  }
+
+  .seat--right {
+    left: calc(50% + var(--middle) + var(--bulge) * var(--arc));
+  }
+
+  .ritual--picking .seat--idle {
+    opacity: 0.55;
+  }
+
+  .ritual--picking .seat--idle.seat--current {
+    opacity: 1;
+  }
+
+  @keyframes gather {
+    from {
+      opacity: 0;
+      scale: 0.7;
+    }
+  }
+
+  .spread {
+    --card-h: clamp(210px, 34dvh, 320px);
+    flex: 1;
+    align-content: center;
+  }
+
+  .spread[data-count='9'],
+  .spread[data-count='10'],
+  .spread[data-count='11'],
+  .spread[data-count='12'],
+  .spread[data-count='13'],
+  .spread[data-count='14'],
+  .spread[data-count='15'],
+  .spread[data-count='16'] {
+    --card-h: clamp(170px, 24dvh, 240px);
+  }
+
+  .page--gameover .actions {
+    flex-direction: row;
+    width: auto;
+    justify-content: center;
+    margin: auto auto 0;
+  }
+}
+
+/* Telas de computador mais baixas, como notebooks de 768 px de altura. */
+@media (min-width: 900px) and (min-height: 560px) and (max-height: 720px) {
+  :root {
+    --card-h: 40dvh;
+    font-size: 16px;
+  }
+
+  .big-name {
+    font-size: 2.9rem;
+  }
+
+  .display {
+    font-size: 2.1rem;
+  }
+
+  .candle--timer {
+    height: 150px;
+    --candle-h: 78px;
+  }
+
+  .timer {
+    font-size: 3.6rem;
+  }
+
+  .outcome {
+    min-height: 92px;
+    padding: 8px 16px;
+  }
+
+  .outcome__card {
+    height: 72px;
+  }
+
+  .fallen__card {
+    --card-h: 33dvh;
+  }
+}
+
+/* Quem pede menos movimento vê tudo parado, e nada some. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
