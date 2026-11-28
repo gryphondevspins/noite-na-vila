@@ -5,7 +5,6 @@ import {
   nightPrompt,
   nightResult,
   playerById,
-  privateNotes,
   submitNightAction,
   type ActionKind,
   type Aura,
@@ -139,7 +138,7 @@ export function NightTurn({ game, onChange, onHome }: Props) {
             <p className="eyebrow">Você é</p>
             <TarotCard role={player.role} titleAs="h1" flip />
             <p className="description">{role.description}</p>
-            <Notes game={game} notes={privateNotes(game, player.id)} />
+            <Notes game={game} playerId={player.id} />
           </>
         }
         bottom={

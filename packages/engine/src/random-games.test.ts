@@ -12,7 +12,6 @@ import {
   privateNotes,
   submitNightAction,
   submitVote,
-  validateGame,
   winners,
   type GameState,
   type NightOption,
@@ -65,13 +64,16 @@ test('milhares de partidas com sorteios aleatórios chegam ao fim sem erro', () 
     const rng = seeded(seed * 7919)
     const players = 4 + Math.floor(rng() * 13)
     const setup: RoleSetup = {}
-    const wanted = sample([...OPTIONAL_ROLE_IDS], Math.floor(rng() * players), rng)
-    for (const role of wanted) {
-      setup[role] = true
-      if (validateGame(names(players), setup)) setup[role] = false
-    }
+    const wanted = sample(
+      [...OPTIONAL_ROLE_IDS],
+      Math.floor(rng() * (OPTIONAL_ROLE_IDS.length + 1)),
+      rng,
+    )
+    for (const role of wanted) setup[role] = true
+    // Metade das partidas com funções repetidas e vários assassinos.
+    const rules = { repeat: seed % 2 === 0, maxAssassins: 1 + Math.floor(rng() * 7) }
 
-    let state = createGame(names(players), setup, rng)
+    let state = createGame(names(players), setup, rng, rules)
     for (let steps = 0; state.phase !== 'gameOver'; steps++) {
       expect(steps, `partida ${seed} não termina`).toBeLessThan(5000)
       state = step(state, rng)

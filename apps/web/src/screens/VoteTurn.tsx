@@ -3,7 +3,6 @@ import {
   alivePlayers,
   currentPlayer,
   playerById,
-  privateNotes,
   submitVote,
   type GameState,
 } from '@vila/engine'
@@ -67,7 +66,7 @@ export function VoteTurn({ game, onChange, onHome }: Props) {
           <>
             <img className="sigil" src={LOGO} alt="" />
             <h1>{voter.name}, quem deve sair?</h1>
-            <Notes game={game} notes={privateNotes(game, voter.id)} />
+            <Notes game={game} playerId={voter.id} />
           </>
         }
         bottom={

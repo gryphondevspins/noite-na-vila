@@ -35,6 +35,12 @@ export const OPTIONAL_ROLE_IDS = [
 export type OptionalRoleId = (typeof OPTIONAL_ROLE_IDS)[number]
 export type RoleId = 'assassin' | OptionalRoleId | 'villager'
 
+/**
+ * Não se repetem nem quando as repetidas estão liberadas: um segundo Cupido apagaria o casal
+ * do primeiro, e dois Incendiários dividiriam os mesmos encharcados.
+ */
+export const UNIQUE_ROLE_IDS: readonly RoleId[] = ['cupid', 'arsonist']
+
 /** `solo` joga sozinho: cada um desses é um time próprio. */
 export type Team = 'village' | 'assassin' | 'solo'
 
@@ -90,7 +96,8 @@ function fromCatalog(
 export const ROLES: Record<RoleId, Role> = {
   assassin: fromCatalog('assassin', 'Serial Killer', 'assassin', {
     name: 'Assassino',
-    description: 'Mata um jogador por noite. Vence sozinho.',
+    description:
+      'Mata um jogador por noite. Havendo vários assassinos, eles se conhecem, dão um só golpe juntos e vencem juntos.',
   }),
 
   detective: fromCatalog('detective', 'Detective', 'village', { group: 'info' }),

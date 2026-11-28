@@ -67,6 +67,11 @@ function optionFor(state: GameState, playerId: string, kind: ActionKind): NightO
   const living = state.doused.filter((id) => isAliveId(state, id))
 
   switch (kind) {
+    case 'attack': {
+      // Assassinos não atacam uns aos outros.
+      const prey = others.filter((id) => playerById(state, id).role !== 'assassin')
+      return prey.length > 0 ? { kind, count: 1, candidates: prey } : null
+    }
     case 'ignite':
       return living.length > 0 ? { kind, count: 0, candidates: [] } : null
     case 'douse': {
@@ -187,6 +192,22 @@ function applyMarks(state: GameState): GameState {
   return next
 }
 
+/**
+ * Os assassinos dão um só golpe por noite: no alvo mais escolhido. No empate, vale a escolha
+ * de quem jogou por último, que já tinha visto a dos aliados.
+ */
+function packTarget(state: GameState): string | null {
+  const picks = state.turnOrder.flatMap((id) => {
+    const action = state.actions[id]
+    return action?.kind === 'attack' ? action.targets : []
+  })
+  const support = (target: string) => picks.filter((pick) => pick === target).length
+  return picks.reduce<string | null>(
+    (best, pick) => (best === null || support(pick) >= support(best) ? pick : best),
+    null,
+  )
+}
+
 /** Quem morre pelo que foi feito nesta noite, antes das mortes em cadeia. */
 function nightVictims(state: GameState): { victims: string[]; hardened: string[] } {
   const actions = Object.entries(state.actions).map(([actorId, a]) => ({ actorId, ...a }))
@@ -194,14 +215,17 @@ function nightVictims(state: GameState): { victims: string[]; hardened: string[]
   const roleOf = (id: string) => playerById(state, id).role
 
   const shielded = using('protect', 'heal').map((a) => a.targets[0]!)
-  const attacks = using('attack', 'shoot', 'poison')
+  const prey = packTarget(state)
+  const attacks = [
+    ...(prey === null ? [] : [prey]),
+    ...using('shoot', 'poison').map((a) => a.targets[0]!),
+  ]
   const visits = using('visit')
   const awayFromHome = visits.map((a) => a.actorId)
   const victims: string[] = []
   const hardened = [...state.hardened]
 
-  for (const attack of attacks) {
-    const target = attack.targets[0]!
+  for (const target of attacks) {
     if (awayFromHome.includes(target) || shielded.includes(target)) continue
 
     const guard = using('guard').find((a) => a.targets[0] === target)
@@ -212,10 +236,9 @@ function nightVictims(state: GameState): { victims: string[]; hardened: string[]
     else victims.push(victim)
   }
 
-  const attacked = attacks.map((a) => a.targets[0]!)
   for (const { actorId, targets } of visits) {
     const host = targets[0]!
-    if (isKiller(roleOf(host)) || attacked.includes(host)) victims.push(actorId)
+    if (isKiller(roleOf(host)) || attacks.includes(host)) victims.push(actorId)
   }
 
   // Água benta e fogo ignoram qualquer proteção.

@@ -13,7 +13,8 @@ export function News({ game }: { game: GameState }) {
     .filter((id) => player(id).alive)
     .map((id) => `${player(id).name} está de castigo: hoje não fala nem vota.`)
 
-  const lines = [...revived, ...exposed, ...new Set(silenced)]
+  // Funções repetidas podem agir sobre a mesma pessoa: cada aviso aparece uma vez.
+  const lines = [...new Set([...revived, ...exposed, ...silenced])]
   if (lines.length === 0) return null
   return (
     <ul className="notes">

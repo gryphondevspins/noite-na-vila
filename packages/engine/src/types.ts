@@ -13,6 +13,13 @@ export interface Player {
 /** Funções ligadas na partida. O que não aparece está desligado. */
 export type RoleSetup = Partial<Record<OptionalRoleId, boolean>>
 
+export interface DrawRules {
+  /** A mesma função pode sair para mais de uma pessoa. */
+  repeat?: boolean
+  /** Só vale com repetição: o sorteio põe de 1 até esta quantidade. */
+  maxAssassins?: number
+}
+
 export type Phase = 'night' | 'dawn' | 'discussion' | 'voting' | 'voteResult' | 'gameOver'
 
 export type Winner =
@@ -131,6 +138,9 @@ export type NightResult =
 
 /** Recado que só a própria pessoa lê, na vez dela. */
 export type Note =
+  | { type: 'allies'; ids: string[] }
+  /** Quem os aliados que já jogaram nesta noite querem atacar. */
+  | { type: 'plan'; picks: { allyId: string; targetId: string }[] }
   | { type: 'lover'; partnerId: string }
   | { type: 'hunt'; targetId: string }
   | { type: 'changed'; from: RoleId }

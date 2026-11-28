@@ -252,6 +252,122 @@ const seat = (name: string) =>
 const roles = (cast: Parameters<typeof table>[0], round = 2) =>
   table({ ...cast, Bia: 'villager', Caio: 'villager', Davi: 'villager' }, round)
 
+describe('sorteio sem bloqueios', () => {
+  const start = () => screen.getByRole('button', { name: 'Sortear funções e começar' })
+  const repeatSwitch = () => screen.getByRole('switch', { name: 'Funções podem se repetir' })
+  const maxSelect = () => screen.getByLabelText('Máximo de assassinos') as HTMLSelectElement
+  const countOf = (role: RoleId) => saved().players.filter((p) => p.role === role).length
+  const EIGHT = [...NAMES, 'Davi', 'Edu', 'Fabi', 'Hugo']
+
+  function open(players: string[] = NAMES) {
+    render(<App />)
+    click('Novo jogo')
+    addPlayers(players)
+  }
+
+  test('ligar todas as cartas com 4 pessoas não bloqueia o começo', () => {
+    open()
+    for (const id of OPTIONAL_ROLE_IDS) {
+      const box = screen.getByRole('checkbox', { name: ROLES[id].name }) as HTMLInputElement
+      if (!box.checked) fireEvent.click(box)
+    }
+
+    expect(start()).toHaveProperty('disabled', false)
+    expect(text()).toContain('o sorteio escolhe quais entram')
+    fireEvent.click(start())
+    expect(countOf('assassin')).toBe(1)
+    expect(countOf('villager')).toBe(1)
+  })
+
+  test('o máximo de assassinos só aparece com a repetição ligada', () => {
+    open(EIGHT)
+    expect(repeatSwitch()).toHaveProperty('checked', false)
+    expect(screen.queryByLabelText('Máximo de assassinos')).toBeNull()
+
+    fireEvent.click(repeatSwitch())
+
+    expect([...maxSelect().options].map((o) => o.value)).toEqual(['1', '2', '3'])
+  })
+
+  test('o máximo escolhido encolhe junto com a roda', () => {
+    open(EIGHT)
+    fireEvent.click(repeatSwitch())
+    fireEvent.change(maxSelect(), { target: { value: '3' } })
+
+    click('Remover Hugo')
+    click('Remover Fabi')
+
+    expect(maxSelect().value).toBe('2')
+    expect(text()).toContain('de 1 a 2')
+  })
+
+  test('as regras do sorteio ficam salvas para o próximo jogo e para a revanche', () => {
+    open([...NAMES, 'Davi', 'Edu'])
+    fireEvent.click(repeatSwitch())
+    fireEvent.change(maxSelect(), { target: { value: '2' } })
+    fireEvent.click(start())
+
+    expect(JSON.parse(localStorage.getItem(SAVE_KEY)!).rules).toEqual({
+      repeat: true,
+      maxAssassins: 2,
+    })
+    cleanup()
+
+    render(<App />)
+    click('Novo jogo')
+    expect(repeatSwitch()).toHaveProperty('checked', true)
+    expect(maxSelect().value).toBe('2')
+  })
+
+  test('o assassino vê o nome do aliado só depois de abrir a própria vez', () => {
+    resume(roles({ Gui: 'assassin', Rai: 'assassin' }))
+    expect(text()).not.toContain('Também são assassinos')
+
+    wait(1000)
+    click('Sou Gui')
+
+    expect(text()).toContain('Também são assassinos: Rai')
+  })
+
+  test('o assassino que joga depois lê quem o aliado quer atacar', () => {
+    const game = roles({ Rai: 'assassin', Gui: 'assassin' })
+    resume({ ...game, turnIndex: 1, actions: { Rai: { kind: 'attack', targets: ['Bia'] } } })
+    wait(1000)
+    click('Sou Gui')
+
+    expect(text()).toContain('Rai quer atacar Bia')
+  })
+
+  test('o fim de jogo fala dos assassinos no plural', () => {
+    const game = roles({ Gui: 'assassin', Rai: 'assassin' })
+    resume({
+      ...game,
+      phase: 'voteResult',
+      winner: 'assassin',
+      voteOutcome: { eliminatedId: null, tally: {} },
+    })
+    click('Ver o resultado')
+
+    expect(text()).toContain('Os assassinos venceram')
+  })
+
+  test('dois ritualistas que revivem a mesma pessoa geram um só aviso', () => {
+    const game = roles({ Rita: 'ritualist', Nina: 'ritualist', Gui: 'assassin' })
+    resume({ ...game, phase: 'dawn', revived: ['Davi', 'Davi'] })
+
+    expect(text().split('Davi voltou dos mortos')).toHaveLength(2)
+  })
+
+  test('o recado do pão conta todos os pães recebidos', () => {
+    const game = roles({ Gui: 'assassin' })
+    resume({ ...game, phase: 'voting', bread: ['Gui', 'Gui'] })
+    wait(1000)
+    click('Sou Gui')
+
+    expect(text()).toContain('seu voto vale 2 a mais')
+  })
+})
+
 describe('funções novas nas telas', () => {
   test('dá para ligar qualquer uma das funções opcionais', () => {
     render(<App />)

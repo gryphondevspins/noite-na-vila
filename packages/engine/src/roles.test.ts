@@ -9,7 +9,6 @@ import {
   nightResult,
   privateNotes,
   submitNightAction,
-  validateGame,
   winners,
   type GameState,
 } from './index'
@@ -176,11 +175,6 @@ describe('informantes', () => {
     })
 
     expect(roleOf(dawn, 'Rato')).toBe('doctor')
-  })
-
-  test('o aprendiz exige alguém para substituir', () => {
-    expect(validateGame(names(6), { apprentice: true })).toMatch(/Aprendiz/)
-    expect(validateGame(names(6), { apprentice: true, auraSeer: true })).toBeNull()
   })
 })
 

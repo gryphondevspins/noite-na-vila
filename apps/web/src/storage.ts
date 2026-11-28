@@ -1,4 +1,4 @@
-import type { GameState, RoleSetup } from '@vila/engine'
+import type { DrawRules, GameState, RoleSetup } from '@vila/engine'
 
 export const SAVE_KEY = 'noite-na-vila:partida'
 const TABLE_KEY = 'noite-na-vila:roda'
@@ -9,12 +9,14 @@ const TABLE_VERSION = 1
 export interface Match {
   game: GameState
   setup: RoleSetup
+  rules?: DrawRules
   discussionMinutes: number
 }
 
 export interface TablePrefs {
   names: string[]
   setup: RoleSetup
+  rules?: DrawRules
   discussionMinutes: number
 }
 
@@ -41,8 +43,8 @@ export const saveMatch = (match: Match): void => write(SAVE_KEY, MATCH_VERSION, 
 export function loadMatch(): Match | null {
   const data = read(SAVE_KEY, MATCH_VERSION)
   if (!Array.isArray(data?.game?.players)) return null
-  const { game, setup, discussionMinutes } = data
-  return { game, setup, discussionMinutes }
+  const { game, setup, rules, discussionMinutes } = data
+  return { game, setup, rules, discussionMinutes }
 }
 
 export const saveTable = (prefs: TablePrefs): void => write(TABLE_KEY, TABLE_VERSION, prefs)
@@ -50,6 +52,6 @@ export const saveTable = (prefs: TablePrefs): void => write(TABLE_KEY, TABLE_VER
 export function loadTable(): TablePrefs | null {
   const data = read(TABLE_KEY, TABLE_VERSION)
   if (!Array.isArray(data?.names)) return null
-  const { names, setup, discussionMinutes } = data
-  return { names, setup, discussionMinutes }
+  const { names, setup, rules, discussionMinutes } = data
+  return { names, setup, rules, discussionMinutes }
 }

@@ -1,5 +1,12 @@
-import { defaultSetup, MAX_PLAYERS, validateGame, type RoleSetup } from '@vila/engine'
-import { OPTIONAL_ROLE_IDS, ROLE_GROUPS, ROLES } from '@vila/roles'
+import {
+  defaultSetup,
+  MAX_PLAYERS,
+  maxAssassinsFor,
+  MIN_PLAYERS,
+  validateGame,
+  type RoleSetup,
+} from '@vila/engine'
+import { OPTIONAL_ROLE_IDS, ROLE_GROUPS, ROLES, UNIQUE_ROLE_IDS } from '@vila/roles'
 import { useState, type FormEvent } from 'react'
 import { Page } from '../components/Page'
 import { TarotCard } from '../components/TarotCard'
@@ -23,11 +30,18 @@ export function Setup({ initial, onStart, onBack }: Props) {
   const [custom, setCustom] = useState<RoleSetup | null>(
     initial && !sameSetup(initial.setup, defaultSetup(initial.names.length)) ? initial.setup : null,
   )
+  const [repeat, setRepeat] = useState(initial?.rules?.repeat ?? false)
+  const [wantedAssassins, setWantedAssassins] = useState(initial?.rules?.maxAssassins ?? 1)
   const setup = custom ?? defaultSetup(names.length)
-  const problem = validateGame(names, setup)
+  const problem = validateGame(names)
   const active = OPTIONAL_ROLE_IDS.filter((r) => setup[r])
-  const special = 1 + active.length
-  const victims = Math.max(0, names.length - special)
+  const assassinLimit = maxAssassinsFor(names.length)
+  const maxAssassins = Math.min(wantedAssassins, assassinLimit)
+  // Uma vaga é sempre do assassino e outra, da vítima.
+  const openSeats = Math.max(0, names.length - 2)
+  const victims = Math.max(1, names.length - 1 - active.length)
+  const crowded = !repeat && names.length >= MIN_PLAYERS && active.length > openSeats
+  const unique = UNIQUE_ROLE_IDS.map((r) => ROLES[r].name).join(' e ')
 
   function add(event: FormEvent) {
     event.preventDefault()
@@ -104,15 +118,50 @@ export function Setup({ initial, onStart, onBack }: Props) {
         <section className="panel">
           <h2>Cartas do ritual</h2>
           <p className="muted">Toque numa carta para colocar ou tirar.</p>
+          <label className="switch">
+            <span className="grow">Funções podem se repetir</span>
+            <input
+              type="checkbox"
+              role="switch"
+              aria-label="Funções podem se repetir"
+              checked={repeat}
+              onChange={(e) => setRepeat(e.target.checked)}
+            />
+          </label>
+          {repeat && (
+            <>
+              <label className="row between">
+                <span>Máximo de assassinos</span>
+                <select
+                  value={maxAssassins}
+                  onChange={(e) => setWantedAssassins(Number(e.target.value))}
+                >
+                  {Array.from({ length: assassinLimit }, (_, i) => i + 1).map((n) => (
+                    <option key={n} value={n}>
+                      {n}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <p className="muted">
+                O sorteio põe de 1 até esse número. Vários assassinos dão um só golpe por noite.{' '}
+                {unique} saem no máximo uma vez.
+              </p>
+            </>
+          )}
           <div className="deck">
             <figure className="deck__item">
               <TarotCard role="assassin" />
-              <figcaption>sempre 1</figcaption>
+              <figcaption>
+                {repeat && maxAssassins > 1 ? `de 1 a ${maxAssassins}` : 'sempre 1'}
+              </figcaption>
             </figure>
             <figure className="deck__item">
               <TarotCard role="villager" />
               <figcaption>
-                {victims} {victims === 1 ? 'vítima' : 'vítimas'}
+                {repeat
+                  ? 'pelo menos 1'
+                  : `${victims} ${victims === 1 ? 'vítima' : 'vítimas'}`}
               </figcaption>
             </figure>
           </div>
@@ -129,7 +178,7 @@ export function Setup({ initial, onStart, onBack }: Props) {
                       onChange={(e) => setCustom({ ...setup, [role]: e.target.checked })}
                     />
                     <TarotCard role={role} />
-                    <span>{setup[role] ? 'no jogo' : 'fora'}</span>
+                    <span>{setup[role] ? 'no sorteio' : 'fora'}</span>
                   </label>
                 ))}
               </div>
@@ -137,7 +186,7 @@ export function Setup({ initial, onStart, onBack }: Props) {
           ))}
 
           <details className="chosen">
-            <summary>O que fazem as funções ligadas ({special})</summary>
+            <summary>O que fazem as funções ligadas ({1 + active.length})</summary>
             <ul>
               {(['assassin', ...active] as const).map((role) => (
                 <li key={role}>
@@ -158,12 +207,25 @@ export function Setup({ initial, onStart, onBack }: Props) {
             </select>
           </label>
 
+          {crowded && (
+            <p className="muted">
+              {active.length} cartas ligadas para {openSeats} vagas: o sorteio escolhe quais
+              entram.
+            </p>
+          )}
           {problem && <p className="notice">{problem}</p>}
           <button
             type="button"
             className="primary"
             disabled={problem !== null}
-            onClick={() => onStart({ names, setup, discussionMinutes: minutes })}
+            onClick={() =>
+              onStart({
+                names,
+                setup,
+                rules: { repeat, maxAssassins },
+                discussionMinutes: minutes,
+              })
+            }
           >
             Sortear funções e começar
           </button>

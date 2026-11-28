@@ -1,4 +1,4 @@
-import { isAliveId, playerById } from './players'
+import { isAliveId, otherAliveIds, playerById } from './players'
 import type { GameState, Note } from './types'
 
 /** Os recados que só esta pessoa deve ler, na vez dela. */
@@ -8,6 +8,19 @@ export function privateNotes(state: GameState, playerId: string): Note[] {
 
   const previous = state.changed[playerId]
   if (previous) notes.push({ type: 'changed', from: previous })
+
+  if (role === 'assassin') {
+    const allies = otherAliveIds(state, playerId).filter(
+      (id) => playerById(state, id).role === 'assassin',
+    )
+    if (allies.length > 0) notes.push({ type: 'allies', ids: allies })
+
+    const picks = allies.flatMap((allyId) => {
+      const action = state.phase === 'night' ? state.actions[allyId] : undefined
+      return action?.kind === 'attack' ? [{ allyId, targetId: action.targets[0]! }] : []
+    })
+    if (picks.length > 0) notes.push({ type: 'plan', picks })
+  }
 
   const partnerId = state.lovers.includes(playerId)
     ? state.lovers.find((id) => id !== playerId)

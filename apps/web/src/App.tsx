@@ -1,5 +1,5 @@
 import { sound } from '@vila/assets'
-import { createGame, type GameState } from '@vila/engine'
+import { createGame, secureRandom, type GameState } from '@vila/engine'
 import { useEffect, useState } from 'react'
 import { Atmosphere, type Tone } from './components/Atmosphere'
 import { FullscreenButton } from './components/FullscreenButton'
@@ -32,8 +32,9 @@ export function App() {
 
   function start(prefs: TablePrefs) {
     saveTable(prefs)
-    const { names, setup, discussionMinutes } = prefs
-    setMatch({ game: createGame(names, setup), setup, discussionMinutes })
+    const { names, setup, rules, discussionMinutes } = prefs
+    const game = createGame(names, setup, secureRandom, rules)
+    setMatch({ game, setup, rules, discussionMinutes })
     setScreen('game')
   }
 

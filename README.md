@@ -33,20 +33,33 @@ Por esse endereço o computador precisa continuar ligado. Para instalar o jogo n
 
 - De 4 a 16 jogadores, cadastrados na ordem da roda.
 - As funções de todos são sorteadas de uma vez, antes de qualquer pessoa olhar a sua.
+- Há sempre pelo menos 1 assassino e 1 vítima. As outras vagas são sorteadas entre as cartas
+  ligadas. Pode ligar quantas quiser: se não couberem todas, o sorteio escolhe quais entram.
+- **Sem repetição** (padrão): 1 assassino, cada carta sai no máximo uma vez e a vaga que sobrar
+  vira vítima.
+- **Com repetição:** cada vaga é sorteada entre as cartas ligadas e a Vítima. Cupido e
+  Incendiário continuam saindo no máximo uma vez.
+- Com repetição, escolhe-se o máximo de assassinos, e o sorteio põe de 1 até esse número. O
+  limite garante que a vila chegue a votar: 1 com 4 ou 5 pessoas, 2 com 6 ou 7, 3 com 8 ou 9, até
+  7 com 16.
+- Vários assassinos se conhecem, não se atacam e vencem juntos. Dão **um só golpe por noite**:
+  quem joga depois vê a escolha dos aliados, vale a maioria e, no empate, quem jogou por último.
 - **Primeira rodada:** ninguém morre e não há votação. Vidente e detetive já investigam.
 - Ataques e proteções são resolvidos depois que todos jogaram.
 - Quem morre ou é eliminado revela a função.
 - Na votação, o mais votado sai. Empate não elimina ninguém. Dá para pular o voto.
 - A vila vence quando não sobra nenhum matador (Assassino ou Incendiário). Um matador vence
-  quando é o único e sobra só ele e mais uma pessoa. Se todos morrerem, ninguém vence.
+  quando é o único e sobra só ele e mais uma pessoa. Vários assassinos vencem quando são pelo
+  menos metade dos vivos e o Incendiário já caiu. Se todos morrerem, ninguém vence.
 - Proteção segura ataque, tiro e veneno. Fogo e água benta passam por qualquer proteção.
 - Poderes de uso único podem ser guardados para outra noite.
 - Na primeira noite não há mortes: só agem as funções que não matam nem protegem.
 - Recados secretos (par apaixonado, alvo, troca de função, pão) aparecem só na vez da pessoa.
 
-São 25 funções. Há sempre 1 assassino e pelo menos 1 vítima (sem poder; discute e vota).
+São 25 funções. Assassino e Vítima (sem poder; discute e vota) estão sempre no jogo.
 Todas as outras podem ser ligadas ou desligadas. A partida começa com Detetive, Médico e,
-com 5 ou mais pessoas, a Vidente.
+com 5 ou mais pessoas, a Vidente. O Aprendiz de Vidente que sair sem ninguém para substituir
+joga como uma vítima.
 
 | Grupo | Função | O que faz |
 | --- | --- | --- |

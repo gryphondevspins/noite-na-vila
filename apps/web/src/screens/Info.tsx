@@ -1,10 +1,16 @@
 import { MAX_PLAYERS, MIN_PLAYERS } from '@vila/engine'
-import { ROLE_GROUPS, ROLE_IDS, ROLES } from '@vila/roles'
+import { ROLE_GROUPS, ROLE_IDS, ROLES, type Team } from '@vila/roles'
 import { Page } from '../components/Page'
 import { TarotCard } from '../components/TarotCard'
 
 interface Props {
   onBack: () => void
+}
+
+const TEAMS: Record<Team, string> = {
+  village: 'Time da vila',
+  assassin: 'Time dos assassinos',
+  solo: 'Joga sozinho',
 }
 
 export function RoleGuide({ onBack }: Props) {
@@ -22,9 +28,7 @@ export function RoleGuide({ onBack }: Props) {
                 <TarotCard role={id} titleAs="h3" flip delay={150 + i * 110} />
                 <div>
                   <p>{ROLES[id].description}</p>
-                  <p className="eyebrow">
-                    {ROLES[id].team === 'village' ? 'Time da vila' : 'Joga sozinho'}
-                  </p>
+                  <p className="eyebrow">{TEAMS[ROLES[id].team]}</p>
                 </div>
               </li>
             ))}
@@ -46,8 +50,8 @@ export function HowToPlay({ onBack }: Props) {
         </p>
         <ol className="steps">
           <li>
-            <b>Sorteio.</b> Todas as funções são definidas de uma vez, antes de qualquer pessoa
-            olhar.
+            <b>Sorteio.</b> Há sempre pelo menos um assassino e uma vítima. As outras vagas são
+            sorteadas entre as cartas ligadas, de uma vez, antes de qualquer pessoa olhar.
           </li>
           <li>
             <b>Noite.</b> O grimório passa pela roda. Cada pessoa vê sua função e age em segredo.
@@ -68,8 +72,10 @@ export function HowToPlay({ onBack }: Props) {
         <p className="notice">Na primeira rodada não há mortes e não há votação.</p>
         <p>
           <b>A vila vence</b> quando não sobra nenhum matador (Assassino ou Incendiário).{' '}
-          <b>Um matador vence</b> quando é o único e sobra só ele e mais uma pessoa. O Bobo, o
-          Caçador de Cabeças e os apaixonados têm vitórias próprias, escritas nas cartas.
+          <b>Um matador vence</b> quando é o único e sobra só ele e mais uma pessoa.{' '}
+          <b>Vários assassinos vencem juntos</b> quando são pelo menos metade dos vivos e o
+          Incendiário já caiu. O Bobo, o Caçador de Cabeças e os apaixonados têm vitórias
+          próprias, escritas nas cartas.
         </p>
         <p>
           <b>Proteção</b> segura ataque, tiro e veneno. Fogo e água benta passam por qualquer

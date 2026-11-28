@@ -36,7 +36,10 @@ export const isKiller = (role: RoleId): role is 'assassin' | 'arsonist' =>
 /** Quem joga sozinho forma um time próprio. */
 export const sideOf = (role: RoleId): string => (ROLES[role].team === 'solo' ? role : ROLES[role].team)
 
-/** Com um só matador e no máximo mais uma pessoa vivos, não há como a vila vencer. */
+/**
+ * Os assassinos vencem quando não há outro matador e eles já são pelo menos metade dos vivos.
+ * Um matador sozinho vence quando sobra só ele e mais uma pessoa.
+ */
 export function findWinner(state: GameState): Winner | null {
   const alive = alivePlayers(state)
   if (alive.length === 0) return 'nobody'
@@ -46,6 +49,8 @@ export function findWinner(state: GameState): Winner | null {
 
   const killers = alive.map((p) => p.role).filter(isKiller)
   if (killers.length === 0) return 'village'
+  const onlyAssassins = killers.every((role) => role === 'assassin')
+  if (onlyAssassins && killers.length * 2 >= alive.length) return 'assassin'
   return killers.length === 1 && alive.length <= 2 ? killers[0]! : null
 }
 

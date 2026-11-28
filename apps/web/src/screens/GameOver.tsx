@@ -21,11 +21,15 @@ interface Props {
 
 export function GameOver({ game, onHome, onRematch }: Props) {
   const winnerIds = winners(game)
+  const title =
+    game.winner === 'assassin' && winnerIds.length > 1
+      ? 'Os assassinos venceram!'
+      : TITLES[game.winner!]
   return (
     <Page name="gameover">
       <div className="verdict">
         <p className="eyebrow">O ritual terminou</p>
-        <h1 className="title">{TITLES[game.winner!]}</h1>
+        <h1 className="title">{title}</h1>
       </div>
       <ul className="spread" data-count={game.players.length}>
         {game.players.map((player, i) => {
